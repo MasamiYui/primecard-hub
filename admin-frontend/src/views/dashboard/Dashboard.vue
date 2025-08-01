@@ -6,8 +6,8 @@
     </div>
 
     <!-- 统计卡片 -->
-    <a-row :gutter="[24, 24]" class="stats-row">
-      <a-col :xs="24" :sm="12" :lg="6">
+    <a-row :gutter="[32, 32]" class="stats-row">
+      <a-col :span="6">
         <a-card class="stat-card">
           <a-statistic
             title="总用户数"
@@ -18,7 +18,7 @@
         </a-card>
       </a-col>
       
-      <a-col :xs="24" :sm="12" :lg="6">
+      <a-col :span="6">
         <a-card class="stat-card">
           <a-statistic
             title="信用卡数量"
@@ -29,7 +29,7 @@
         </a-card>
       </a-col>
       
-      <a-col :xs="24" :sm="12" :lg="6">
+      <a-col :span="6">
         <a-card class="stat-card">
           <a-statistic
             title="新闻文章"
@@ -40,7 +40,7 @@
         </a-card>
       </a-col>
       
-      <a-col :xs="24" :sm="12" :lg="6">
+      <a-col :span="6">
         <a-card class="stat-card">
           <a-statistic
             title="分类数量"
@@ -53,9 +53,9 @@
     </a-row>
 
     <!-- 内容区域 -->
-    <a-row :gutter="[24, 24]" class="content-row">
+    <a-row :gutter="[32, 32]" class="content-row">
       <!-- 最近用户 -->
-      <a-col :xs="24" :lg="12">
+      <a-col :span="12">
         <a-card title="最近注册用户" class="content-card">
           <template #extra>
             <router-link to="/users">查看全部</router-link>
@@ -64,6 +64,7 @@
           <a-list
             :data-source="statistics?.recentUsers || []"
             :loading="loading"
+            size="large"
           >
             <template #renderItem="{ item }">
               <a-list-item>
@@ -87,7 +88,7 @@
       </a-col>
 
       <!-- 最近新闻 -->
-      <a-col :xs="24" :lg="12">
+      <a-col :span="12">
         <a-card title="最新新闻" class="content-card">
           <template #extra>
             <router-link to="/news">查看全部</router-link>
@@ -96,6 +97,7 @@
           <a-list
             :data-source="statistics?.recentNews || []"
             :loading="loading"
+            size="large"
           >
             <template #renderItem="{ item }">
               <a-list-item>
@@ -123,7 +125,6 @@
                       <span>{{ formatDate(item.createdAt) }}</span>
                       <a-tag
                         :color="item.isPublished ? 'green' : 'orange'"
-                        size="small"
                       >
                         {{ item.isPublished ? '已发布' : '草稿' }}
                       </a-tag>
@@ -139,8 +140,8 @@
 
     <!-- 快速操作 -->
     <a-card title="快速操作" class="quick-actions">
-      <a-row :gutter="[16, 16]">
-        <a-col :xs="24" :sm="12" :md="6">
+      <a-row :gutter="[32, 24]">
+        <a-col :span="6">
           <a-button
             type="primary"
             size="large"
@@ -152,7 +153,7 @@
           </a-button>
         </a-col>
         
-        <a-col :xs="24" :sm="12" :md="6">
+        <a-col :span="6">
           <a-button
             type="primary"
             size="large"
@@ -164,7 +165,7 @@
           </a-button>
         </a-col>
         
-        <a-col :xs="24" :sm="12" :md="6">
+        <a-col :span="6">
           <a-button
             size="large"
             block
@@ -175,7 +176,7 @@
           </a-button>
         </a-col>
         
-        <a-col :xs="24" :sm="12" :md="6">
+        <a-col :span="6">
           <a-button
             size="large"
             block
@@ -243,33 +244,36 @@ onMounted(() => {
 <style scoped>
 .dashboard {
   padding: 0;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .dashboard-header {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .dashboard-header h1 {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 600;
   color: #1a1a1a;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
 }
 
 .dashboard-header p {
   color: #666;
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .stats-row {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .stat-card {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  height: 100%;
 }
 
 .stat-card:hover {
@@ -278,7 +282,7 @@ onMounted(() => {
 }
 
 .content-row {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .content-card {
@@ -288,14 +292,16 @@ onMounted(() => {
 }
 
 .content-card :deep(.ant-card-body) {
-  padding: 16px;
+  padding: 24px;
+  height: 400px;
+  overflow-y: auto;
 }
 
 .news-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: 12px;
+  font-size: 13px;
   color: #666;
 }
 
@@ -305,46 +311,43 @@ onMounted(() => {
 }
 
 .quick-actions :deep(.ant-btn) {
-  height: 48px;
+  height: 56px;
   border-radius: 8px;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
+  font-size: 16px;
 }
 
 :deep(.ant-statistic-title) {
-  font-size: 14px;
+  font-size: 16px;
   color: #666;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 :deep(.ant-statistic-content) {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 600;
 }
 
 :deep(.ant-list-item-meta-title) {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
 :deep(.ant-list-item-meta-description) {
-  font-size: 12px;
+  font-size: 14px;
 }
 
-@media (max-width: 768px) {
-  .dashboard-header h1 {
-    font-size: 24px;
-  }
-  
-  .dashboard-header p {
-    font-size: 14px;
-  }
-  
-  :deep(.ant-statistic-content) {
-    font-size: 20px;
-  }
+:deep(.ant-avatar) {
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+}
+
+:deep(.ant-list-item) {
+  padding: 16px 0;
 }
 </style>

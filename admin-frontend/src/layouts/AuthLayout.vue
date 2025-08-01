@@ -66,12 +66,12 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 24px;
-  padding: 48px;
+  padding: 64px;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(255, 255, 255, 0.2);
   width: 100%;
-  max-width: 480px;
+  max-width: 600px;
   position: relative;
   z-index: 1;
 }
@@ -119,15 +119,25 @@
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .auth-container {
-    margin: 20px;
-    padding: 32px 24px;
-    max-width: none;
-  }
-  
-  .logo-text {
-    font-size: 24px;
-  }
+/* PC Web 版样式 */
+.auth-layout {
+  padding: 40px;
+}
+
+.logo-image {
+  width: 64px;
+  height: 64px;
+}
+
+.logo-text {
+  font-size: 32px;
+}
+
+.auth-content {
+  margin-bottom: 40px;
+}
+
+.auth-footer p {
+  font-size: 16px;
 }
 </style>

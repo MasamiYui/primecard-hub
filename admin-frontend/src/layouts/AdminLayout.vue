@@ -231,15 +231,18 @@ watch(route, () => {
 <style scoped>
 .admin-layout {
   min-height: 100vh;
+  display: flex;
 }
 
 .sidebar {
+  height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   z-index: 100;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 .logo {
@@ -266,15 +269,20 @@ watch(route, () => {
 
 .sidebar-menu {
   border-right: none;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
 }
 
 .main-layout {
   margin-left: 256px;
   transition: margin-left 0.2s;
+  width: calc(100% - 256px);
+  flex: 1;
 }
 
 .admin-layout :deep(.ant-layout-sider-collapsed) + .main-layout {
   margin-left: 80px;
+  width: calc(100% - 80px);
 }
 
 .header {
@@ -287,6 +295,7 @@ watch(route, () => {
   position: sticky;
   top: 0;
   z-index: 99;
+  height: 64px;
 }
 
 .header-left {
@@ -309,6 +318,7 @@ watch(route, () => {
 
 .breadcrumb {
   margin: 0;
+  font-size: 14px;
 }
 
 .header-right {
@@ -325,6 +335,7 @@ watch(route, () => {
 
 .username {
   font-weight: 500;
+  margin-right: 4px;
 }
 
 .content {
@@ -338,32 +349,5 @@ watch(route, () => {
 .content-wrapper {
   padding: 24px;
   min-height: calc(100vh - 112px);
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s;
-  }
-  
-  .admin-layout :deep(.ant-layout-sider-collapsed) {
-    transform: translateX(0);
-  }
-  
-  .main-layout {
-    margin-left: 0;
-  }
-  
-  .header {
-    padding: 0 16px;
-  }
-  
-  .content {
-    margin: 16px;
-  }
-  
-  .content-wrapper {
-    padding: 16px;
-  }
 }
 </style>

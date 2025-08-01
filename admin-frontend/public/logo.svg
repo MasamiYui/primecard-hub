@@ -9,4 +9,12 @@
   <circle cx="34" cy="27" r="2" fill="white" opacity="0.6"/>
   <defs>
     <linearGradient id="gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-      <stop stop
+      <stop stop-color="#1890FF" />
+      <stop offset="1" stop-color="#0050B3" />
+    </linearGradient>
+    <linearGradient id="cardGradient" x1="26" y1="23" x2="38" y2="31" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD666" />
+      <stop offset="1" stop-color="#FFA940" />
+    </linearGradient>
+  </defs>
+</svg>

@@ -98,6 +98,7 @@ const handleSubmit = async () => {
 <style scoped>
 .login-form {
   width: 100%;
+  min-width: 400px;
 }
 
 .form-header {
@@ -106,16 +107,16 @@ const handleSubmit = async () => {
 }
 
 .form-header h2 {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 600;
   color: #1a1a1a;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
 }
 
 .form-header p {
   color: #666;
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .form {
@@ -131,7 +132,7 @@ const handleSubmit = async () => {
 .forgot-password {
   color: #1890ff;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .forgot-password:hover {
@@ -139,14 +140,15 @@ const handleSubmit = async () => {
 }
 
 .submit-button {
-  height: 48px;
-  font-size: 16px;
+  height: 56px;
+  font-size: 18px;
   font-weight: 500;
   border-radius: 8px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   border: none;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   transition: all 0.3s ease;
+  margin-top: 8px;
 }
 
 .submit-button:hover {
@@ -161,6 +163,7 @@ const handleSubmit = async () => {
 :deep(.ant-form-item-label > label) {
   font-weight: 500;
   color: #333;
+  font-size: 16px;
 }
 
 :deep(.ant-input-affix-wrapper) {
@@ -176,10 +179,19 @@ const handleSubmit = async () => {
 }
 
 :deep(.ant-input) {
-  font-size: 14px;
+  font-size: 16px;
+  height: 48px;
 }
 
 :deep(.ant-checkbox-wrapper) {
-  font-size: 14px;
+  font-size: 16px;
+}
+
+:deep(.ant-form-item) {
+  margin-bottom: 24px;
+}
+
+:deep(.ant-input-affix-wrapper) {
+  padding: 8px 12px;
 }
 </style>
