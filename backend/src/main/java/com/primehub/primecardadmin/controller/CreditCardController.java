@@ -6,7 +6,7 @@ import com.primehub.primecardadmin.dto.PageResponseDTO;
 import com.primehub.primecardadmin.entity.CardLevel;
 import com.primehub.primecardadmin.entity.CardStatus;
 import com.primehub.primecardadmin.service.CreditCardService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +15,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/credit-cards")
-@RequiredArgsConstructor
+@RequestMapping("/credit-cards")
 public class CreditCardController {
 
-    private final CreditCardService creditCardService;
+    @Autowired
+    private CreditCardService creditCardService;
 
     @GetMapping
     public ResponseEntity<ApiResponseDTO<PageResponseDTO<CreditCardDTO>>> getAllCreditCards(

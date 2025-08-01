@@ -1,16 +1,25 @@
 package com.primehub.primecardadmin.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotBlank;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class LogoutRequestDTO {
     
     @NotBlank(message = "令牌不能为空")
     private String token;
+
+    // 构造函数
+    public LogoutRequestDTO() {}
+
+    public LogoutRequestDTO(String token) {
+        this.token = token;
+    }
+
+    // Getter和Setter方法
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

@@ -2,16 +2,16 @@ package com.primehub.primecardadmin.security;
 
 import com.primehub.primecardadmin.entity.User;
 import com.primehub.primecardadmin.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class UserSecurity {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * 检查当前登录用户是否是指定的用户ID

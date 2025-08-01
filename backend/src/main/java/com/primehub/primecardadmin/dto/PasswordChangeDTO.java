@@ -16,7 +16,7 @@ public class PasswordChangeDTO {
     private String currentPassword;
     
     @NotBlank(message = "新密码不能为空")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$", 
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,}$", 
              message = "密码必须至少8个字符，包含至少一个字母和一个数字")
     private String newPassword;
     

@@ -1,10 +1,6 @@
 package com.primehub.primecardadmin.dto;
 
 import com.primehub.primecardadmin.entity.NewsStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,10 +9,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class NewsCreateDTO {
     
     @NotBlank(message = "标题不能为空")
@@ -40,4 +32,83 @@ public class NewsCreateDTO {
     private Set<Long> tagIds = new HashSet<>();
     
     private LocalDateTime publishTime;
+    
+    public NewsCreateDTO() {}
+    
+    public NewsCreateDTO(String title, String content, String summary, Long categoryId, 
+                        NewsStatus status, String coverImage, Set<Long> tagIds, LocalDateTime publishTime) {
+        this.title = title;
+        this.content = content;
+        this.summary = summary;
+        this.categoryId = categoryId;
+        this.status = status;
+        this.coverImage = coverImage;
+        this.tagIds = tagIds != null ? tagIds : new HashSet<>();
+        this.publishTime = publishTime;
+    }
+    
+    // Getters and Setters
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+    
+    public void setContent(String content) {
+        this.content = content;
+    }
+    
+    public String getSummary() {
+        return summary;
+    }
+    
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+    
+    public Long getCategoryId() {
+        return categoryId;
+    }
+    
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+    
+    public NewsStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(NewsStatus status) {
+        this.status = status;
+    }
+    
+    public String getCoverImage() {
+        return coverImage;
+    }
+    
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+    
+    public Set<Long> getTagIds() {
+        return tagIds;
+    }
+    
+    public void setTagIds(Set<Long> tagIds) {
+        this.tagIds = tagIds != null ? tagIds : new HashSet<>();
+    }
+    
+    public LocalDateTime getPublishTime() {
+        return publishTime;
+    }
+    
+    public void setPublishTime(LocalDateTime publishTime) {
+        this.publishTime = publishTime;
+    }
 }

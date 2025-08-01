@@ -1,48 +1,71 @@
 package com.primehub.primecardadmin.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ApiResponseDTO<T> {
     private boolean success;
     private String message;
     private T data;
     private String errorCode;
     
+    public ApiResponseDTO() {}
+    
+    public ApiResponseDTO(boolean success, String message, T data, String errorCode) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+        this.errorCode = errorCode;
+    }
+    
+    // Getters and Setters
+    public boolean isSuccess() {
+        return success;
+    }
+    
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
+    public T getData() {
+        return data;
+    }
+    
+    public void setData(T data) {
+        this.data = data;
+    }
+    
+    public String getErrorCode() {
+        return errorCode;
+    }
+    
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+    
+    // Static factory methods
     public static <T> ApiResponseDTO<T> success(T data) {
-        return ApiResponseDTO.<T>builder()
-                .success(true)
-                .message("操作成功")
-                .data(data)
-                .build();
+        return new ApiResponseDTO<>(true, "操作成功", data, null);
     }
     
     public static <T> ApiResponseDTO<T> success(String message, T data) {
-        return ApiResponseDTO.<T>builder()
-                .success(true)
-                .message(message)
-                .data(data)
-                .build();
+        return new ApiResponseDTO<>(true, message, data, null);
+    }
+    
+    public static <T> ApiResponseDTO<T> success(String message) {
+        return new ApiResponseDTO<>(true, message, null, null);
     }
     
     public static <T> ApiResponseDTO<T> error(String message) {
-        return ApiResponseDTO.<T>builder()
-                .success(false)
-                .message(message)
-                .build();
+        return new ApiResponseDTO<>(false, message, null, null);
     }
     
     public static <T> ApiResponseDTO<T> error(String errorCode, String message) {
-        return ApiResponseDTO.<T>builder()
-                .success(false)
-                .errorCode(errorCode)
-                .message(message)
-                .build();
+        return new ApiResponseDTO<>(false, message, null, errorCode);
     }
 }

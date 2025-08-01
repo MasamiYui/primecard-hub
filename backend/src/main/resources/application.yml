@@ -33,6 +33,8 @@ jwt:
 # 文件上传配置
 file:
   upload-dir: ./uploads
+  max-size: 10MB
+  allowed-types: image/jpeg,image/png,image/gif,application/pdf
   
 # 跨域配置
 cors:
@@ -42,3 +44,29 @@ cors:
   exposed-headers: "Authorization"
   allow-credentials: true
   max-age: 3600
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.primehub.primecardadmin: DEBUG
+
+# Springdoc OpenAPI 配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    try-it-out-enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    doc-expansion: none
+  show-actuator: false
+  group-configs:
+    - group: 'default'
+      display-name: 'PrimeCardHub API'
+      paths-to-match: '/**'

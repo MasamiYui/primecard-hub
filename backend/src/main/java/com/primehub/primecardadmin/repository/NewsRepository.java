@@ -7,6 +7,7 @@ import com.primehub.primecardadmin.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News, Long> {
+public interface NewsRepository extends JpaRepository<News, Long>, JpaSpecificationExecutor<News> {
     
     Page<News> findByStatus(NewsStatus status, Pageable pageable);
     
@@ -31,4 +32,12 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     
     @Query("SELECT n FROM News n JOIN n.tags t WHERE t.id = ?1")
     Page<News> findByTagId(Long tagId, Pageable pageable);
+    
+    List<News> findByStatusOrderByViewCountDesc(NewsStatus status, Pageable pageable);
+    
+    List<News> findByStatusOrderByCreatedAtDesc(NewsStatus status, Pageable pageable);
+    
+    Page<News> findByCategoryIdAndStatus(Long categoryId, NewsStatus status, Pageable pageable);
+    
+    Page<News> findByTagsIdAndStatus(Long tagId, NewsStatus status, Pageable pageable);
 }

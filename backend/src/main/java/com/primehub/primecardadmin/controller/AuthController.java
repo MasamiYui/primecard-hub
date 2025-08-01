@@ -2,22 +2,24 @@ package com.primehub.primecardadmin.controller;
 
 import com.primehub.primecardadmin.dto.*;
 import com.primehub.primecardadmin.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth")
-@RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
 
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponseDTO<UserDTO>> register(@Valid @RequestBody UserRegistrationDTO registrationDTO) {
-        UserDTO userDTO = userService.registerUser(registrationDTO);
+        UserDTO userDTO = userService.register(registrationDTO);
         return ResponseEntity.ok(ApiResponseDTO.success("用户注册成功", userDTO));
     }
 

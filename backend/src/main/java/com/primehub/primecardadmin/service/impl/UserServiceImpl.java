@@ -12,7 +12,7 @@ import com.primehub.primecardadmin.repository.UserRepository;
 import com.primehub.primecardadmin.repository.UserSessionRepository;
 import com.primehub.primecardadmin.service.UserService;
 import com.primehub.primecardadmin.util.JwtTokenUtil;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,13 +26,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final UserSessionRepository userSessionRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserSessionRepository userSessionRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     
     @Value("${jwt.expiration}")
     private long jwtExpiration;
@@ -56,13 +59,12 @@ public class UserServiceImpl implements UserService {
         }
         
         // 创建用户
-        User user = User.builder()
-                .username(registrationDTO.getUsername())
-                .email(registrationDTO.getEmail())
-                .password(passwordEncoder.encode(registrationDTO.getPassword()))
-                .role(UserRole.EDITOR) // 默认为编辑角色
-                .status(UserStatus.ACTIVE)
-                .build();
+        User user = new User();
+        user.setUsername(registrationDTO.getUsername());
+        user.setEmail(registrationDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+        user.setRole(UserRole.EDITOR); // 默认为编辑角色
+        user.setStatus(UserStatus.ACTIVE);
         
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
@@ -94,14 +96,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         
         // 创建会话
-        LocalDateTime expiresAt = LocalDateTime.now().plusMillis(jwtExpiration);
-        UserSession session = UserSession.builder()
-                .sessionId(UUID.randomUUID().toString())
-                .user(user)
-                .token(token)
-                .refreshToken(refreshToken)
-                .expiresAt(expiresAt)
-                .build();
+        LocalDateTime expiresAt = LocalDateTime.now().plusNanos(jwtExpiration * 1_000_000);
+        UserSession session = new UserSession(
+                UUID.randomUUID().toString(),
+                user,
+                token,
+                refreshToken,
+                expiresAt,
+                LocalDateTime.now()
+        );
         
         userSessionRepository.save(session);
         
@@ -190,7 +193,7 @@ public class UserServiceImpl implements UserService {
         // 生成新的Token
         String newToken = jwtTokenUtil.generateToken(session.getUser().getUsername());
         String newRefreshToken = UUID.randomUUID().toString();
-        LocalDateTime newExpiresAt = LocalDateTime.now().plusMillis(jwtExpiration);
+        LocalDateTime newExpiresAt = LocalDateTime.now().plusNanos(jwtExpiration * 1_000_000);
         
         // 更新会话
         session.refresh(newToken, newRefreshToken, newExpiresAt);

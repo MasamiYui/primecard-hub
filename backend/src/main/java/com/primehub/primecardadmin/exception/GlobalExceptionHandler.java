@@ -24,45 +24,42 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiResponseDTO<Void>> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                ex.getMessage(),
-                HttpStatus.NOT_FOUND.value());
+        ApiResponseDTO<Void> response = ApiResponseDTO.error(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(FileStorageException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ApiResponseDTO<Void>> handleFileStorageException(FileStorageException ex) {
+        ApiResponseDTO<Void> response = ApiResponseDTO.error(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiResponseDTO<Void>> handleEntityNotFoundException(EntityNotFoundException ex) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                ex.getMessage(),
-                HttpStatus.NOT_FOUND.value());
+        ApiResponseDTO<Void> response = ApiResponseDTO.error(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ApiResponseDTO<Void>> handleBadCredentialsException(BadCredentialsException ex) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                "用户名或密码错误",
-                HttpStatus.UNAUTHORIZED.value());
+        ApiResponseDTO<Void> response = ApiResponseDTO.error("用户名或密码错误");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ApiResponseDTO<Void>> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                ex.getMessage(),
-                HttpStatus.UNAUTHORIZED.value());
+        ApiResponseDTO<Void> response = ApiResponseDTO.error(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<ApiResponseDTO<Void>> handleAccessDeniedException(AccessDeniedException ex) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                "没有权限执行此操作",
-                HttpStatus.FORBIDDEN.value());
+        ApiResponseDTO<Void> response = ApiResponseDTO.error("没有权限执行此操作");
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -76,10 +73,10 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        ApiResponseDTO<Map<String, String>> response = ApiResponseDTO.error(
-                "输入参数验证失败",
-                HttpStatus.BAD_REQUEST.value(),
-                errors);
+        ApiResponseDTO<Map<String, String>> response = new ApiResponseDTO<>();
+        response.setSuccess(false);
+        response.setMessage("输入参数验证失败");
+        response.setData(errors);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -87,26 +84,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ApiResponseDTO<Void>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                "数据完整性冲突，可能是唯一约束或外键约束被违反",
-                HttpStatus.CONFLICT.value());
+        ApiResponseDTO<Void> response = ApiResponseDTO.error("数据完整性冲突，可能是唯一约束或外键约束被违反");
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiResponseDTO<Void>> handleBusinessException(BusinessException ex) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                ex.getMessage(),
-                ex.getErrorCode());
-        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getHttpStatus()));
+        ApiResponseDTO<Void> response = ApiResponseDTO.error(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ApiResponseDTO<Void>> handleGlobalException(Exception ex, WebRequest request) {
-        ApiResponseDTO<Void> response = ApiResponseDTO.error(
-                "服务器内部错误",
-                HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ApiResponseDTO<Void> response = ApiResponseDTO.error("服务器内部错误");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

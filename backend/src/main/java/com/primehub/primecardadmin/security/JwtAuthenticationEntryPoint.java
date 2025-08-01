@@ -27,8 +27,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         
         ApiResponseDTO<?> apiResponse = ApiResponseDTO.error(
-                "未授权访问", 
-                HttpStatus.UNAUTHORIZED.value());
+                String.valueOf(HttpStatus.UNAUTHORIZED.value()), 
+                "未授权访问");
         
         objectMapper.writeValue(response.getOutputStream(), apiResponse);
     }

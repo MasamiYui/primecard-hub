@@ -3,7 +3,7 @@ package com.primehub.primecardadmin.controller;
 import com.primehub.primecardadmin.dto.ApiResponseDTO;
 import com.primehub.primecardadmin.dto.DashboardStatsDTO;
 import com.primehub.primecardadmin.service.StatisticsService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +15,11 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/statistics")
-@RequiredArgsConstructor
+@RequestMapping("/statistics")
 public class StatisticsController {
 
-    private final StatisticsService statisticsService;
+    @Autowired
+    private StatisticsService statisticsService;
 
     @GetMapping("/dashboard")
     @PreAuthorize("hasRole('ADMIN')")
@@ -58,5 +58,26 @@ public class StatisticsController {
             @RequestParam(required = false) LocalDate endDate) {
         Map<String, Long> growth = statisticsService.getUserGrowth(startDate, endDate);
         return ResponseEntity.ok(ApiResponseDTO.success("获取用户增长数据成功", growth));
+    }
+    
+    @GetMapping("/credit-cards-by-bank")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<Map<String, Long>>> getCreditCardsByBank() {
+        Map<String, Long> cardsByBank = statisticsService.getCreditCardsByBank();
+        return ResponseEntity.ok(ApiResponseDTO.success("获取按银行统计的信用卡数据成功", cardsByBank));
+    }
+    
+    @GetMapping("/credit-cards-by-type")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<Map<String, Long>>> getCreditCardsByType() {
+        Map<String, Long> cardsByType = statisticsService.getCreditCardsByType();
+        return ResponseEntity.ok(ApiResponseDTO.success("获取按类型统计的信用卡数据成功", cardsByType));
+    }
+    
+    @GetMapping("/credit-cards-by-level")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<Map<String, Long>>> getCreditCardsByLevel() {
+        Map<String, Long> cardsByLevel = statisticsService.getCreditCardsByLevel();
+        return ResponseEntity.ok(ApiResponseDTO.success("获取按级别统计的信用卡数据成功", cardsByLevel));
     }
 }

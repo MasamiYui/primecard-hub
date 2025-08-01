@@ -3,7 +3,7 @@ package com.primehub.primecardadmin.controller;
 import com.primehub.primecardadmin.dto.ApiResponseDTO;
 import com.primehub.primecardadmin.dto.FileUploadResponseDTO;
 import com.primehub.primecardadmin.service.FileStorageService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/files")
-@RequiredArgsConstructor
+@RequestMapping("/files")
 public class FileController {
 
-    private final FileStorageService fileStorageService;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @PostMapping("/upload")
     @PreAuthorize("isAuthenticated()")

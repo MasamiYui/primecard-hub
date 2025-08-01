@@ -4,7 +4,7 @@ import com.primehub.primecardadmin.dto.ApiResponseDTO;
 import com.primehub.primecardadmin.dto.PageResponseDTO;
 import com.primehub.primecardadmin.dto.TagDTO;
 import com.primehub.primecardadmin.service.TagService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +13,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tags")
-@RequiredArgsConstructor
+@RequestMapping("/tags")
 public class TagController {
 
-    private final TagService tagService;
+    @Autowired
+    private TagService tagService;
 
     @GetMapping
     public ResponseEntity<ApiResponseDTO<PageResponseDTO<TagDTO>>> getAllTags(

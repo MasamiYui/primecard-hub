@@ -1,7 +1,7 @@
 package com.primehub.primecardadmin.security;
 
 import com.primehub.primecardadmin.util.JwtTokenUtil;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,15 +16,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUserDetailsService jwtUserDetailsService;
-    private final JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtUserDetailsService jwtUserDetailsService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+
+        // 排除不需要JWT认证的路径
+        String requestPath = request.getRequestURI();
+        logger.debug("JWT过滤器处理请求路径: " + requestPath);
+        if (shouldSkipFilter(requestPath)) {
+            logger.debug("跳过JWT认证，路径: " + requestPath);
+            chain.doFilter(request, response);
+            return;
+        }
 
         final String requestTokenHeader = request.getHeader("Authorization");
 
@@ -58,5 +68,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         chain.doFilter(request, response);
+    }
+
+    /**
+     * 判断是否应该跳过JWT过滤器
+     */
+    private boolean shouldSkipFilter(String requestPath) {
+        // 排除认证相关路径
+        if (requestPath.startsWith("/api/auth/")) {
+            return true;
+        }
+        
+        // 排除H2控制台
+        if (requestPath.startsWith("/api/h2-console")) {
+            return true;
+        }
+        
+        // 排除OpenAPI文档相关路径
+        if (requestPath.startsWith("/api/v3/api-docs") ||
+            requestPath.startsWith("/api/swagger-ui") ||
+            requestPath.equals("/api/swagger-ui.html") ||
+            requestPath.startsWith("/api/swagger-resources") ||
+            requestPath.startsWith("/api/webjars")) {
+            return true;
+        }
+        
+        return false;
     }
 }

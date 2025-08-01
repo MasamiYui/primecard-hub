@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/news")
+@RequestMapping("/news")
 public class NewsController {
 
     private final NewsService newsService;
