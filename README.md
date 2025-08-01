@@ -6,6 +6,65 @@
 
 PrimeCard Hub 是一个为信用卡用户打造的开源信用卡资讯与管理平台。我们聚焦信用卡领域的实用信息整合与便捷服务，旨在帮助用户充分利用信用卡，实现获取优惠、获取有用资讯、便捷管理卡片等需求，让每一位用户都能充分享受信用卡带来的福利。
 
+## 快速开始
+
+### 开发环境设置
+
+1. 克隆仓库
+   ```bash
+   git clone https://github.com/yourusername/primecard-hub.git
+   cd primecard-hub
+   ```
+
+2. 启动后端服务
+   ```bash
+   cd backend
+   ./mvnw spring-boot:run
+   ```
+
+3. 启动前端服务
+   ```bash
+   cd admin-frontend
+   npm install
+   npm run dev
+   ```
+
+### 测试数据
+
+为方便开发和测试，项目提供了测试数据导入功能。您可以通过以下方式导入测试数据：
+
+1. **使用脚本导入**
+   ```bash
+   cd backend
+   # Linux/Mac
+   chmod +x import-test-data.sh
+   ./import-test-data.sh
+   
+   # Windows
+   import-test-data.bat
+   ```
+
+2. **使用Java配置导入**
+   
+   启动应用时添加以下参数：
+   ```bash
+   ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev,test-data
+   ```
+
+3. **使用API导入**
+   
+   在开发或测试环境中，可以通过API导入：
+   ```bash
+   curl -X POST http://localhost:8080/api/api/test-data/load
+   ```
+
+导入后可使用以下测试账号：
+- 管理员：admin@primehub.com / password
+- 编辑：editor@primehub.com / password
+- 查看：viewer@primehub.com / password
+
+更多详情请参考 [测试数据使用说明](backend/TEST-DATA-README.md)。
+
 
 
 
