@@ -1,0 +1,72 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/primecarddb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+# 应用配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# JWT配置
+jwt:
+  secret: primecardHubSecretKey2024ForJWTTokenGeneration
+  expiration: 86400000 # 24小时
+
+# 文件上传配置
+file:
+  upload-dir: ./uploads
+  max-size: 10MB
+  allowed-types: image/jpeg,image/png,image/gif,application/pdf
+  
+# 跨域配置
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "Authorization"
+  allow-credentials: true
+  max-age: 3600
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.primehub.primecardadmin: DEBUG
+
+# Springdoc OpenAPI 配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    try-it-out-enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    doc-expansion: none
+  show-actuator: false
+  group-configs:
+    - group: 'default'
+      display-name: 'PrimeCardHub API'
+      paths-to-match: '/**'
