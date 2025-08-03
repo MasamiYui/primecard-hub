@@ -207,8 +207,25 @@ export interface Statistics {
   totalCreditCards: number
   totalNews: number
   totalCategories: number
-  recentUsers: User[]
-  recentNews: News[]
+  totalTags?: number
+  activeUsers?: number
+  newUsersToday?: number
+  newUsersThisWeek?: number
+  newUsersThisMonth?: number
+  publishedNews?: number
+  draftNews?: number
+  newsViewsToday?: number
+  newsViewsThisWeek?: number
+  newsViewsThisMonth?: number
+  activeCategories?: number
+  activeCreditCards?: number
+  topTags?: Record<string, number>
+  cardsByBank?: Record<string, number>
+  cardsByType?: Record<string, number>
+  cardsByLevel?: Record<string, number>
+  // 前端添加的模拟数据
+  recentUsers?: User[]
+  recentNews?: News[]
 }
 
 // 查询参数类型

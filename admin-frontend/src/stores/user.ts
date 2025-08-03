@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import type { User, LoginRequest } from '@/types/api'
 import { authApi } from '@/api/auth'
 import { userApi } from '@/api/user'
-import { message } from 'ant-design-vue'
+import { ElMessage } from 'element-plus'
 
 export const useUserStore = defineStore('user', () => {
   // 状态
@@ -44,16 +44,16 @@ export const useUserStore = defineStore('user', () => {
           isLoggedIn: isLoggedIn.value 
         })
         
-        message.success('登录成功')
+        ElMessage.success('登录成功')
         return true
       } else {
         console.error('登录失败:', response.message)
-        message.error(response.message || '登录失败')
+        ElMessage.error(response.message || '登录失败')
         return false
       }
     } catch (error: any) {
       console.error('登录异常:', error)
-      message.error(error.message || '登录失败')
+      ElMessage.error(error.message || '登录失败')
       return false
     } finally {
       loading.value = false
@@ -76,7 +76,7 @@ export const useUserStore = defineStore('user', () => {
       localStorage.removeItem('token')
       localStorage.removeItem('refreshToken')
       
-      message.success('已退出登录')
+      ElMessage.success('已退出登录')
     }
   }
 
@@ -141,14 +141,14 @@ export const useUserStore = defineStore('user', () => {
       const response = await authApi.changePassword({ oldPassword, newPassword })
       
       if (response.success) {
-        message.success('密码修改成功')
+        ElMessage.success('密码修改成功')
         return true
       } else {
-        message.error(response.message || '密码修改失败')
+        ElMessage.error(response.message || '密码修改失败')
         return false
       }
     } catch (error: any) {
-      message.error(error.message || '密码修改失败')
+      ElMessage.error(error.message || '密码修改失败')
       return false
     } finally {
       loading.value = false

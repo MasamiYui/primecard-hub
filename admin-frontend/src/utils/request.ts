@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
-import { message } from 'ant-design-vue'
+import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
 
@@ -52,7 +52,7 @@ service.interceptors.response.use(
     }
     
     // 业务错误
-    message.error(data.message || '请求失败')
+    ElMessage.error(data.message || '请求失败')
     return Promise.reject(new Error(data.message || '请求失败'))
   },
   (error) => {
@@ -63,7 +63,7 @@ service.interceptors.response.use(
       
       switch (status) {
         case 401:
-          message.error('登录已过期，请重新登录')
+          ElMessage.error('登录已过期，请重新登录')
           
           // 清除本地存储
           localStorage.removeItem('token')
@@ -86,21 +86,21 @@ service.interceptors.response.use(
           window.location.href = window.location.origin + '/login'
           break
         case 403:
-          message.error('没有权限访问该资源')
+          ElMessage.error('没有权限访问该资源')
           break
         case 404:
-          message.error('请求的资源不存在')
+          ElMessage.error('请求的资源不存在')
           break
         case 500:
-          message.error('服务器内部错误')
+          ElMessage.error('服务器内部错误')
           break
         default:
-          message.error(data?.message || `请求失败 (${status})`)
+          ElMessage.error(data?.message || `请求失败 (${status})`)
       }
     } else if (error.code === 'ECONNABORTED') {
-      message.error('请求超时，请稍后重试')
+      ElMessage.error('请求超时，请稍后重试')
     } else {
-      message.error('网络错误，请检查网络连接')
+      ElMessage.error('网络错误，请检查网络连接')
     }
     
     return Promise.reject(error)

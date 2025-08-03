@@ -5,10 +5,14 @@ public class ApiResponseDTO<T> {
     private String message;
     private T data;
     private String errorCode;
+    private final java.time.Instant timestamp;
     
-    public ApiResponseDTO() {}
+    public ApiResponseDTO() {
+        this.timestamp = java.time.Instant.now();
+    }
     
     public ApiResponseDTO(boolean success, String message, T data, String errorCode) {
+        this();
         this.success = success;
         this.message = message;
         this.data = data;
@@ -46,6 +50,10 @@ public class ApiResponseDTO<T> {
     
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
+    }
+
+    public java.time.Instant getTimestamp() {
+        return timestamp;
     }
     
     // Static factory methods

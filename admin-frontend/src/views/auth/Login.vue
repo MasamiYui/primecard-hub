@@ -5,62 +5,65 @@
       <p>请登录您的管理员账户</p>
     </div>
     
-    <a-form
+    <el-form
+      ref="loginForm"
       :model="formData"
       :rules="rules"
-      @finish="handleSubmit"
-      layout="vertical"
+      @submit.prevent="handleSubmit"
+      label-position="top"
       class="form"
     >
-      <a-form-item name="username" label="用户名">
-        <a-input
-          v-model:value="formData.username"
+      <el-form-item prop="username" label="用户名">
+        <el-input
+          v-model="formData.username"
           size="large"
           placeholder="请输入用户名"
-          :prefix="h(UserOutlined)"
+          :prefix-icon="User"
         />
-      </a-form-item>
+      </el-form-item>
       
-      <a-form-item name="password" label="密码">
-        <a-input-password
-          v-model:value="formData.password"
+      <el-form-item prop="password" label="密码">
+        <el-input
+          v-model="formData.password"
+          type="password"
+          show-password
           size="large"
           placeholder="请输入密码"
-          :prefix="h(LockOutlined)"
+          :prefix-icon="Lock"
         />
-      </a-form-item>
+      </el-form-item>
       
-      <a-form-item>
+      <el-form-item>
         <div class="form-options">
-          <a-checkbox v-model:checked="rememberMe">
+          <el-checkbox v-model="rememberMe">
             记住我
-          </a-checkbox>
+          </el-checkbox>
           <a href="#" class="forgot-password">忘记密码？</a>
         </div>
-      </a-form-item>
+      </el-form-item>
       
-      <a-form-item>
-        <a-button
+      <el-form-item>
+        <el-button
           type="primary"
-          html-type="submit"
+          native-type="submit"
           size="large"
-          block
           :loading="userStore.loading"
           class="submit-button"
+          style="width: 100%;"
         >
           登录
-        </a-button>
-      </a-form-item>
-    </a-form>
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, h } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { User, Lock } from '@element-plus/icons-vue'
 import type { LoginRequest } from '@/types/api'
 
 const router = useRouter()
@@ -85,7 +88,12 @@ const rules = {
   ],
 }
 
+const loginForm = ref(null)
+
 const handleSubmit = async () => {
+  if (!loginForm.value) return
+  await (loginForm.value as any).validate(async (valid: boolean) => {
+    if (valid) {
   try {
     console.log('开始登录，提交数据:', formData.value)
     const success = await userStore.login(formData.value)
@@ -105,17 +113,19 @@ const handleSubmit = async () => {
       }
       
       // 使用强制导航方式跳转，增加延迟确保token完全保存
-      setTimeout(() => {
-        console.log('延迟执行跳转')
-        console.log('使用强制导航方式跳转')
-        // 确保使用完整的URL路径
-        window.location.href = window.location.origin + '/dashboard'
-        console.log('跳转URL:', window.location.origin + '/dashboard')
-      }, 1000)
+          setTimeout(() => {
+            console.log('延迟执行跳转')
+            console.log('使用强制导航方式跳转')
+            // 确保使用完整的URL路径
+            window.location.href = window.location.origin + '/dashboard'
+            console.log('跳转URL:', window.location.origin + '/dashboard')
+          }, 1000)
+        }
+      } catch (error) {
+        console.error('Login error:', error)
+      }
     }
-  } catch (error) {
-    console.error('Login error:', error)
-  }
+  })
 }
 </script>
 
@@ -184,7 +194,7 @@ const handleSubmit = async () => {
   transform: translateY(0);
 }
 
-:deep(.ant-form-item-label > label) {
+:deep(.el-form-item__label) {
   font-weight: 500;
   color: #333;
   font-size: 16px;

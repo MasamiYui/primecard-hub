@@ -1,123 +1,121 @@
 <template>
-  <a-layout class="admin-layout">
+  <el-container class="admin-layout">
     <!-- 侧边栏 -->
-    <a-layout-sider
-      v-model:collapsed="appStore.sidebarCollapsed"
-      :trigger="null"
-      collapsible
+    <el-aside
       class="sidebar"
-      :width="256"
-      :collapsed-width="80"
+      :width="appStore.sidebarCollapsed ? '80px' : '256px'"
     >
       <div class="logo">
         <img src="/logo.svg" alt="PrimeCard" class="logo-image" />
         <span v-if="!appStore.sidebarCollapsed" class="logo-text">PrimeCard</span>
       </div>
       
-      <a-menu
-        v-model:selectedKeys="selectedKeys"
-        v-model:openKeys="openKeys"
-        mode="inline"
-        theme="dark"
+      <el-menu
+        :default-active="selectedKeys[0]"
+        :default-openeds="openKeys"
+        :collapse="appStore.sidebarCollapsed"
         class="sidebar-menu"
-        @click="handleMenuClick"
+        background-color="#001529"
+        text-color="rgba(255, 255, 255, 0.65)"
+        active-text-color="#fff"
+        @select="handleMenuSelect"
       >
         <template v-for="route in menuRoutes" :key="route.name">
-          <a-sub-menu
+          <el-sub-menu
             v-if="route.children && route.children.length > 0"
-            :key="route.name"
+            :index="route.name"
           >
-            <template #icon>
-              <component :is="route.meta?.icon" />
+            <template #title>
+              <el-icon><component :is="route.meta?.icon" /></el-icon>
+              <span>{{ route.meta?.title }}</span>
             </template>
-            <template #title>{{ route.meta?.title }}</template>
-            <a-menu-item
+            <el-menu-item
               v-for="child in route.children.filter(c => !c.meta?.hideInMenu)"
               :key="child.name"
+              :index="child.name"
             >
               {{ child.meta?.title }}
-            </a-menu-item>
-          </a-sub-menu>
+            </el-menu-item>
+          </el-sub-menu>
           
-          <a-menu-item v-else :key="route.name">
-            <template #icon>
-              <component :is="route.meta?.icon" />
-            </template>
-            {{ route.meta?.title }}
-          </a-menu-item>
+          <el-menu-item v-else :index="route.name">
+            <el-icon><component :is="route.meta?.icon" /></el-icon>
+            <span>{{ route.meta?.title }}</span>
+          </el-menu-item>
         </template>
-      </a-menu>
-    </a-layout-sider>
+      </el-menu>
+    </el-aside>
 
-    <a-layout class="main-layout">
+    <el-container class="main-layout">
       <!-- 顶部导航 -->
-      <a-layout-header class="header">
+      <el-header class="header">
         <div class="header-left">
-          <a-button
-            type="text"
+          <el-button
+            link
             class="trigger"
             @click="appStore.toggleSidebar"
           >
-            <MenuUnfoldOutlined v-if="appStore.sidebarCollapsed" />
-            <MenuFoldOutlined v-else />
-          </a-button>
+            <el-icon :size="20">
+              <Expand v-if="appStore.sidebarCollapsed" />
+              <Fold v-else />
+            </el-icon>
+          </el-button>
           
-          <a-breadcrumb class="breadcrumb">
-            <a-breadcrumb-item
+          <el-breadcrumb class="breadcrumb" separator="/">
+            <el-breadcrumb-item
               v-for="(crumb, index) in appStore.breadcrumbs"
               :key="index"
+              :to="crumb.path"
             >
-              <router-link v-if="crumb.path" :to="crumb.path">
-                {{ crumb.title }}
-              </router-link>
-              <span v-else>{{ crumb.title }}</span>
-            </a-breadcrumb-item>
-          </a-breadcrumb>
+              {{ crumb.title }}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
         </div>
         
         <div class="header-right">
-          <a-space>
-            <a-button type="text" @click="appStore.toggleTheme">
-              <SunOutlined v-if="appStore.theme === 'dark'" />
-              <MoonOutlined v-else />
-            </a-button>
+          <el-space>
+            <el-button link @click="appStore.toggleTheme">
+              <el-icon :size="20">
+                <Sunny v-if="appStore.theme === 'dark'" />
+                <Moon v-else />
+              </el-icon>
+            </el-button>
             
-            <a-dropdown>
-              <a-button type="text" class="user-info">
-                <UserOutlined />
+            <el-dropdown @command="handleUserMenuClick">
+              <el-button link class="user-info">
+                <el-icon><User /></el-icon>
                 <span class="username">{{ userStore.user?.username }}</span>
-                <DownOutlined />
-              </a-button>
-              <template #overlay>
-                <a-menu @click="handleUserMenuClick">
-                  <a-menu-item key="profile">
-                    <UserOutlined />
+                <el-icon><ArrowDown /></el-icon>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="profile">
+                    <el-icon><User /></el-icon>
                     个人资料
-                  </a-menu-item>
-                  <a-menu-item key="settings">
-                    <SettingOutlined />
+                  </el-dropdown-item>
+                  <el-dropdown-item command="settings">
+                    <el-icon><Setting /></el-icon>
                     设置
-                  </a-menu-item>
-                  <a-menu-divider />
-                  <a-menu-item key="logout">
-                    <LogoutOutlined />
+                  </el-dropdown-item>
+                  <el-dropdown-item divided command="logout">
+                    <el-icon><SwitchButton /></el-icon>
                     退出登录
-                  </a-menu-item>
-                </a-menu>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
               </template>
-            </a-dropdown>
-          </a-space>
+            </el-dropdown>
+          </el-space>
         </div>
-      </a-layout-header>
+      </el-header>
 
       <!-- 主要内容区域 -->
-      <a-layout-content class="content">
+      <el-main class="content">
         <div class="content-wrapper">
           <router-view />
         </div>
-      </a-layout-content>
-    </a-layout>
-  </a-layout>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -126,20 +124,20 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-  DownOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-  SunOutlined,
-  MoonOutlined,
-  DashboardOutlined,
-  CreditCardOutlined,
-  FileTextOutlined,
-  AppstoreOutlined,
-  TagsOutlined,
-} from '@ant-design/icons-vue'
+  Fold,
+  Expand,
+  User,
+  ArrowDown,
+  SwitchButton,
+  Setting,
+  Sunny,
+  Moon,
+  Monitor,
+  CreditCard,
+  Document,
+  Menu as IconMenu,
+  Tickets,
+} from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -163,16 +161,16 @@ const menuRoutes = computed(() => {
 })
 
 // 处理菜单点击
-const handleMenuClick = ({ key }: { key: string }) => {
-  const targetRoute = findRouteByName(key)
+const handleMenuSelect = (index: string) => {
+  const targetRoute = findRouteByName(index)
   if (targetRoute) {
     router.push(targetRoute.path)
   }
 }
 
 // 处理用户菜单点击
-const handleUserMenuClick = ({ key }: { key: string }) => {
-  switch (key) {
+const handleUserMenuClick = (command: string | number | object) => {
+  switch (command) {
     case 'profile':
       router.push('/profile')
       break

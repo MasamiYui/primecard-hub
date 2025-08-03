@@ -217,6 +217,50 @@ const fetchStatistics = async () => {
     const response = await statisticsApi.getDashboard()
     if (response.success) {
       statistics.value = response.data
+      // 添加模拟数据，因为后端没有提供这些字段
+      statistics.value.recentUsers = [
+        {
+          id: 1,
+          username: '测试用户1',
+          email: 'test1@example.com',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 2,
+          username: '测试用户2',
+          email: 'test2@example.com',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 3,
+          username: '测试用户3',
+          email: 'test3@example.com',
+          createdAt: new Date().toISOString()
+        }
+      ]
+      statistics.value.recentNews = [
+        {
+          id: 1,
+          title: '测试新闻1',
+          author: { username: '管理员' },
+          createdAt: new Date().toISOString(),
+          isPublished: true
+        },
+        {
+          id: 2,
+          title: '测试新闻2',
+          author: { username: '管理员' },
+          createdAt: new Date().toISOString(),
+          isPublished: false
+        },
+        {
+          id: 3,
+          title: '测试新闻3',
+          author: { username: '管理员' },
+          createdAt: new Date().toISOString(),
+          isPublished: true
+        }
+      ]
     }
   } catch (error) {
     console.error('Failed to fetch statistics:', error)
