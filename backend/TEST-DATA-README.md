@@ -53,18 +53,18 @@
 导入测试数据后，可以使用以下账号登录系统：
 
 1. **管理员账号**
-   - 邮箱：admin@primehub.com
-   - 密码：password
+   - 邮箱：admin
+   - 密码：admin123
    - 权限：所有功能的完全访问权限
 
 2. **编辑账号**
-   - 邮箱：editor@primehub.com
-   - 密码：password
+   - 邮箱：editor
+   - 密码：editor123
    - 权限：内容编辑权限，无系统管理权限
 
 3. **查看账号**
-   - 邮箱：viewer@primehub.com
-   - 密码：password
+   - 邮箱：viewer
+   - 密码：邮箱：viewer123
    - 权限：只读权限，无编辑和管理权限
 
 ## 注意事项

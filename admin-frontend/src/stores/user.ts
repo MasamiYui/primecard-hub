@@ -19,11 +19,15 @@ export const useUserStore = defineStore('user', () => {
   // 登录
   const login = async (loginData: LoginRequest) => {
     try {
+      console.log('登录开始...')
       loading.value = true
       const response = await authApi.login(loginData)
+      console.log('登录API响应:', response)
       
       if (response.success) {
         const { token: newToken, refreshToken: newRefreshToken, user: userData } = response.data
+        console.log('获取到的token:', newToken)
+        console.log('获取到的用户数据:', userData)
         
         // 保存到状态
         token.value = newToken
@@ -34,13 +38,21 @@ export const useUserStore = defineStore('user', () => {
         localStorage.setItem('token', newToken)
         localStorage.setItem('refreshToken', newRefreshToken)
         
+        console.log('用户状态已更新:', { 
+          token: token.value, 
+          user: user.value, 
+          isLoggedIn: isLoggedIn.value 
+        })
+        
         message.success('登录成功')
         return true
       } else {
+        console.error('登录失败:', response.message)
         message.error(response.message || '登录失败')
         return false
       }
     } catch (error: any) {
+      console.error('登录异常:', error)
       message.error(error.message || '登录失败')
       return false
     } finally {
@@ -70,18 +82,27 @@ export const useUserStore = defineStore('user', () => {
 
   // 获取当前用户信息
   const getCurrentUser = async () => {
-    if (!token.value) return false
+    if (!token.value) {
+      console.log('获取用户信息失败: 没有token')
+      return false
+    }
     
     try {
-      const response = await userApi.getCurrentUser()
+      console.log('开始获取用户信息, token:', token.value)
+      const response = await authApi.getCurrentUser()
+      console.log('获取用户信息响应:', response)
+      
       if (response.success) {
         user.value = response.data
+        console.log('获取用户信息成功:', response.data)
         return true
       } else {
+        console.error('获取用户信息失败:', response.message)
         await logout()
         return false
       }
     } catch (error) {
+      console.error('获取用户信息出错:', error)
       await logout()
       return false
     }

@@ -59,11 +59,13 @@
 import { ref, h } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import type { LoginRequest } from '@/types/api'
 
 const router = useRouter()
 const userStore = useUserStore()
+const authStore = useAuthStore()
 
 const formData = ref<LoginRequest>({
   username: '',
@@ -85,9 +87,31 @@ const rules = {
 
 const handleSubmit = async () => {
   try {
+    console.log('开始登录，提交数据:', formData.value)
     const success = await userStore.login(formData.value)
+    console.log('登录结果:', success)
+    
     if (success) {
-      router.push('/dashboard')
+      console.log('登录成功，准备跳转到仪表板')
+      
+      // 同时更新 authStore，确保两个 store 的 token 一致
+      const currentToken = localStorage.getItem('token')
+      const userData = userStore.user
+      
+      if (currentToken && userData) {
+        console.log('同步更新 authStore')
+        authStore.login(currentToken, userData)
+        console.log('authStore 更新完成:', { token: authStore.token, user: authStore.user })
+      }
+      
+      // 使用强制导航方式跳转，增加延迟确保token完全保存
+      setTimeout(() => {
+        console.log('延迟执行跳转')
+        console.log('使用强制导航方式跳转')
+        // 确保使用完整的URL路径
+        window.location.href = window.location.origin + '/dashboard'
+        console.log('跳转URL:', window.location.origin + '/dashboard')
+      }, 1000)
     }
   } catch (error) {
     console.error('Login error:', error)

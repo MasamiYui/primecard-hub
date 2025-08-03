@@ -1,6 +1,7 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import { message } from 'ant-design-vue'
 import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 // 创建axios实例
 const service = axios.create({
@@ -16,7 +17,17 @@ service.interceptors.request.use(
   (config) => {
     const authStore = useAuthStore()
     if (authStore.token) {
+      console.log('请求拦截器 - 使用 authStore token:', authStore.token)
       config.headers.Authorization = `Bearer ${authStore.token}`
+    } else {
+      // 如果 authStore 中没有 token，尝试从 localStorage 获取
+      const token = localStorage.getItem('token')
+      if (token) {
+        console.log('请求拦截器 - 使用 localStorage token:', token)
+        config.headers.Authorization = `Bearer ${token}`
+      } else {
+        console.log('请求拦截器 - 没有可用的 token')
+      }
     }
     return config
   },
@@ -53,9 +64,26 @@ service.interceptors.response.use(
       switch (status) {
         case 401:
           message.error('登录已过期，请重新登录')
-          const authStore = useAuthStore()
-          authStore.logout()
-          window.location.href = '/login'
+          
+          // 清除本地存储
+          localStorage.removeItem('token')
+          localStorage.removeItem('refreshToken')
+          localStorage.removeItem('user')
+          
+          // 清除 store 状态
+          try {
+            const authStore = useAuthStore()
+            const userStore = useUserStore()
+            console.log('清除 authStore 和 userStore 状态')
+            authStore.logout()
+            userStore.logout()
+          } catch (e) {
+            console.error('清除 store 状态失败:', e)
+          }
+          
+          // 使用强制导航方式跳转
+          console.log('使用强制导航方式跳转到登录页')
+          window.location.href = window.location.origin + '/login'
           break
         case 403:
           message.error('没有权限访问该资源')

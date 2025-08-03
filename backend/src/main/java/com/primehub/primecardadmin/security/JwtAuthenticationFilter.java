@@ -74,8 +74,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * 判断是否应该跳过JWT过滤器
      */
     private boolean shouldSkipFilter(String requestPath) {
-        // 排除认证相关路径
-        if (requestPath.startsWith("/api/auth/")) {
+        // 排除认证相关路径，但不包括/api/auth/me
+        if (requestPath.startsWith("/api/auth/") && !requestPath.equals("/api/auth/me")) {
             return true;
         }
         
