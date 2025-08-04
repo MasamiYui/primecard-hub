@@ -57,8 +57,33 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'news',
         name: 'News',
-        component: NewsList,
         meta: { title: '新闻管理', icon: 'Document' },
+        children: [
+          {
+            path: '',
+            name: 'NewsList',
+            component: NewsList,
+            meta: { title: '新闻列表' },
+          },
+          {
+            path: 'create',
+            name: 'NewsCreate',
+            component: () => import('@/views/news/NewsForm.vue'),
+            meta: { title: '新增新闻', hideInMenu: true },
+          },
+          {
+            path: 'edit/:id',
+            name: 'NewsEdit',
+            component: () => import('@/views/news/NewsForm.vue'),
+            meta: { title: '编辑新闻', hideInMenu: true },
+          },
+          {
+            path: 'preview/:id',
+            name: 'NewsPreview',
+            component: () => import('@/views/news/NewsPreview.vue'),
+            meta: { title: '新闻预览', hideInMenu: true },
+          },
+        ],
       },
       {
         path: 'categories',
