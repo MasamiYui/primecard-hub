@@ -17,6 +17,8 @@ public interface TagService {
      */
     PageResponseDTO<TagDTO> getAllTags(int page, int size, String keyword);
 
+    List<TagDTO> getAllTags();
+
     /**
      * 获取热门标签
      *

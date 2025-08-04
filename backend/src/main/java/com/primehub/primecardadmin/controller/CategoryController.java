@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,10 +22,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
-    public ResponseEntity<ApiResponseDTO<List<CategoryDTO>>> getAllCategories(
-            @RequestParam(required = false) CategoryStatus status) {
-        List<CategoryDTO> categories = categoryService.getAllCategories(status);
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponseDTO<List<CategoryDTO>>> getAllCategories() {
+        List<CategoryDTO> categories = categoryService.getAllCategories(null);
         return ResponseEntity.ok(ApiResponseDTO.success("获取分类列表成功", categories));
     }
 

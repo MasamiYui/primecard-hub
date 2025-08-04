@@ -150,6 +150,13 @@ public class TagServiceImpl implements TagService {
     }
     
     // 辅助方法：将实体转换为DTO
+    @Override
+    public List<TagDTO> getAllTags() {
+        return tagRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private TagDTO convertToDTO(Tag tag) {
         TagDTO tagDTO = new TagDTO();
         tagDTO.setId(tag.getId());

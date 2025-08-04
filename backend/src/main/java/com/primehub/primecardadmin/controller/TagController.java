@@ -28,6 +28,12 @@ public class TagController {
         return ResponseEntity.ok(ApiResponseDTO.success("获取标签列表成功", tags));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponseDTO<List<TagDTO>>> getAllTags() {
+        List<TagDTO> tags = tagService.getAllTags();
+        return ResponseEntity.ok(ApiResponseDTO.success("获取所有标签成功", tags));
+    }
+
     @GetMapping("/popular")
     public ResponseEntity<ApiResponseDTO<List<TagDTO>>> getPopularTags(
             @RequestParam(defaultValue = "10") int limit) {

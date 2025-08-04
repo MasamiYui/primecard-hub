@@ -96,7 +96,7 @@ import { newsApi } from '@/api/news'
 import { categoryApi } from '@/api/category'
 import { tagApi } from '@/api/tag'
 import type { FormInstance, FormRules } from 'element-plus'
-import type { News, Category, Tag } from '@/types/api'
+import type { News, Category, Tag, NewsCreate } from '@/types/api'
 
 const route = useRoute()
 const router = useRouter()
@@ -126,7 +126,7 @@ const rules = ref<FormRules>({
   status: [{ required: true, message: '请选择状态', trigger: 'change' }],
 })
 
-const fetchCategories = async () => {
+const getCategoryList = async () => {
   try {
     const res = await categoryApi.getAll()
     if (res.data) {
@@ -137,7 +137,7 @@ const fetchCategories = async () => {
   }
 }
 
-const fetchTags = async () => {
+const getTagList = async () => {
   try {
     const res = await tagApi.getAll()
     if (res.data) {
@@ -168,8 +168,8 @@ const fetchNewsDetails = async (id: number) => {
 }
 
 onMounted(() => {
-  fetchCategories()
-  fetchTags()
+  getCategoryList()
+  getTagList()
   if (isEdit.value) {
     const newsId = Number(route.params.id)
     fetchNewsDetails(newsId)
@@ -181,11 +181,15 @@ const handleSubmit = () => {
     if (valid) {
       loading.value = true
       try {
-        const params = {
-          ...newsForm.value,
-          // The API expects tagIds, not tags
-          tags: undefined
-        }
+        const params: NewsCreate = {
+          title: newsForm.value.title || '',
+          summary: newsForm.value.summary || '',
+          content: newsForm.value.content || '',
+          imageUrl: newsForm.value.imageUrl,
+          status: newsForm.value.status || 'DRAFT',
+          categoryId: newsForm.value.categoryId,
+          tagIds: newsForm.value.tagIds,
+        };
 
         if (isEdit.value) {
           const newsId = Number(route.params.id)

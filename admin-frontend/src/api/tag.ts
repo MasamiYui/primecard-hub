@@ -4,7 +4,7 @@ import type { Tag, TagCreate, ApiResponse, PageResponse, QueryParams } from '@/t
 export const tagApi = {
   // 获取所有标签
   getAll: (): Promise<ApiResponse<Tag[]>> => {
-    return apiClient.get('/tags')
+    return apiClient.get('/tags/all')
   },
 
   // 分页获取标签

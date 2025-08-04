@@ -26,7 +26,7 @@ public class Category {
     @Column(nullable = false)
     private CategoryStatus status;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private List<News> news = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
