@@ -19,8 +19,21 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
+
     @Autowired
     private CategoryService categoryService;
+
+    @GetMapping
+    public ResponseEntity<ApiResponseDTO<List<CategoryDTO>>> getCategories() {
+        try {
+            List<CategoryDTO> categories = categoryService.getAllCategories(null);
+            return ResponseEntity.ok(ApiResponseDTO.success("获取分类列表成功", categories));
+        } catch (Exception e) {
+            logger.error("获取分类列表失败", e);
+            throw e;
+        }
+    }
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponseDTO<List<CategoryDTO>>> getAllCategories() {
