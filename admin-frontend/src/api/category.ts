@@ -31,6 +31,11 @@ export const categoryApi = {
   delete: (id: number): Promise<ApiResponse<void>> => {
     return apiClient.delete(`/categories/${id}`)
   },
+
+  // 更新分类排序
+  updateOrder: (categoryOrders: { id: number, order: number }[]): Promise<ApiResponse<Category[]>> => {
+    return apiClient.put('/categories/order', categoryOrders)
+  },
 }
 
 export const tagApi = {

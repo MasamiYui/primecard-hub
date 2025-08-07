@@ -141,6 +141,10 @@ export interface Category {
   id: number
   name: string
   description: string
+  icon?: string
+  sortOrder?: number
+  status?: string
+  newsCount?: number
   createdAt: string
   updatedAt: string
 }
@@ -148,6 +152,9 @@ export interface Category {
 export interface CategoryCreate {
   name: string
   description: string
+  icon?: string
+  sortOrder?: number
+  status?: string
 }
 
 // 标签相关类型
