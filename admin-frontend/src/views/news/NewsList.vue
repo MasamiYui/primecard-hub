@@ -132,7 +132,7 @@
         </el-table-column>
         <el-table-column prop="category" label="分类" width="120" align="center">
           <template #default="{ row }">
-            <el-tag v-if="row.category" type="success" size="small">{{ row.category.name }}</el-tag>
+            <el-tag v-if="row.category" type="info" size="small" effect="plain">{{ row.category.name }}</el-tag>
             <span v-else class="text-gray">未分类</span>
           </template>
         </el-table-column>
@@ -142,9 +142,10 @@
               <el-tag
                 v-for="tag in row.tags"
                 :key="tag.id"
-                :color="tag.color"
+                type="info"
+                effect="plain"
                 size="small"
-                style="margin: 2px"
+                style="margin: 2px; color: #4b5563; border-color: #e5e7eb; background-color: #f9fafb;"
               >
                 {{ tag.name }}
               </el-tag>
@@ -156,7 +157,7 @@
         </el-table-column>
         <el-table-column prop="status" label="状态" width="100" align="center">
           <template #default="{ row }">
-            <el-tag :type="getStatusType(row.status)" size="small">
+            <el-tag :type="getStatusType(row.status)" size="small" effect="light">
               {{ getStatusText(row.status) }}
             </el-tag>
           </template>
@@ -176,28 +177,30 @@
         </el-table-column>
         <el-table-column label="操作" width="200" fixed="right" align="center">
           <template #default="{ row }">
-            <el-button type="primary" link size="small" @click="handleView(row)">查看</el-button>
-            <el-button type="primary" link size="small" @click="handleEdit(row)">编辑</el-button>
-            <el-dropdown @command="handleStatusCommand(row)">
-              <el-button type="primary" link size="small">
-                更多<el-icon class="el-icon--right"><arrow-down /></el-icon>
+            <div class="action-buttons">
+              <el-button type="primary" link size="small" @click="handleView(row)">查看</el-button>
+              <el-button type="primary" link size="small" @click="handleEdit(row)">编辑</el-button>
+              <el-dropdown @command="handleStatusCommand(row)">
+                <el-button type="primary" link size="small">
+                  更多<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item command="PUBLISHED" :disabled="row.status === 'PUBLISHED'">发布</el-dropdown-item>
+                    <el-dropdown-item command="DRAFT" :disabled="row.status === 'DRAFT'">转为草稿</el-dropdown-item>
+                    <el-dropdown-item command="ARCHIVED" :disabled="row.status === 'ARCHIVED'">归档</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+              <el-button
+                type="danger"
+                link
+                size="small"
+                @click="handleDelete(row)"
+              >
+                删除
               </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="PUBLISHED" :disabled="row.status === 'PUBLISHED'">发布</el-dropdown-item>
-                  <el-dropdown-item command="DRAFT" :disabled="row.status === 'DRAFT'">转为草稿</el-dropdown-item>
-                  <el-dropdown-item command="ARCHIVED" :disabled="row.status === 'ARCHIVED'">归档</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-            <el-button
-              type="danger"
-              link
-              size="small"
-              @click="handleDelete(row)"
-            >
-              删除
-            </el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -501,23 +504,43 @@ const formatDate = (dateString: string) => {
 .table-section {
   background: #fff;
   padding: 24px;
-  border-radius: 4px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  margin-top: 16px;
+  margin-bottom: 24px;
 }
 
 .table-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.table-actions {
+  display: flex;
+  gap: 12px;
 }
 
 .table-actions > .el-button {
-  margin-right: 8px;
+  margin-right: 0;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.table-actions > .el-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .title-cell {
   display: flex;
   flex-direction: column;
+  padding: 4px 0;
+  align-items: flex-start;
+  gap: 4px;
 }
 
 .title-text {
@@ -525,34 +548,162 @@ const formatDate = (dateString: string) => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 250px; /* 根据需要调整 */
+  max-width: 280px;
+  display: inline-block;
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .title-meta {
+  display: flex;
+  gap: 12px;
   font-size: 12px;
-  color: #8c8c8c;
-  margin-top: 4px;
+  color: #9ca3af;
+  margin-top: 6px;
+  align-items: center;
 }
 
 .title-meta .author {
   margin-right: 16px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .tags-cell {
   max-width: 200px; /* 根据需要调整 */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
 }
 
 .text-gray {
-  color: #8c8c8c;
+  color: #9ca3af;
+  font-size: 13px;
 }
 
 .pagination-section {
-  margin-top: 16px;
+  margin-top: 24px;
   display: flex;
   justify-content: flex-end;
+  padding-top: 16px;
+}
+
+:deep(.el-pagination) {
+  padding: 0;
+  font-weight: normal;
+}
+
+:deep(.el-pagination .el-pagination__total) {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+:deep(.el-pagination .btn-prev),
+:deep(.el-pagination .btn-next) {
+  border-radius: 6px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+:deep(.el-pagination .el-pager li) {
+  border-radius: 6px;
+  margin: 0 3px;
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  transition: all 0.3s ease;
+}
+
+:deep(.el-pagination .el-pager li.is-active) {
+  background-color: #6b7280;
+  color: white;
+  border-color: #6b7280;
+  font-weight: 500;
 }
 
 .el-icon--right {
   margin-left: 4px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.action-buttons .el-button {
+  position: relative;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.action-buttons .el-button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+  color: #4b5563;
+}
+
+.action-buttons .el-button--danger:hover {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.05);
+}
+
+/* 优化表格单元格样式 - 高级简约风格 */
+:deep(.el-table) {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.03);
+  border: none;
+}
+
+:deep(.el-table td) {
+  padding: 16px 8px;
+  height: 60px;
+  box-sizing: border-box;
+  text-align: center;
+  border-bottom: 1px solid #f0f2f5;
+  transition: background 0.3s ease;
+  color: #4b5563;
+}
+
+:deep(.el-table th) {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  text-align: center;
+  padding: 16px 8px;
+  height: 56px;
+  border-bottom: 1px solid #e5e7eb;
+  border-top: none;
+}
+
+:deep(.el-table--border th),
+:deep(.el-table--border td) {
+  border-right: none;
+}
+
+:deep(.el-table--border th:first-child),
+:deep(.el-table--border td:first-child) {
+  border-left: none;
+}
+
+:deep(.el-table--striped .el-table__body tr.el-table__row--striped td) {
+  background-color: #fafafa;
+}
+
+:deep(.el-table__body tr:hover > td) {
+  background-color: #f5f5f5 !important;
+}
+
+:deep(.el-table__header-wrapper) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:deep(.el-table__footer-wrapper) {
+  border-top: 1px solid #e5e7eb;
 }
 </style>
