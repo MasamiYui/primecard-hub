@@ -1,0 +1,172 @@
+<!-- pages/card-detail/card-detail.wxml -->
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading"></view>
+    <text>加载中...</text>
+  </view>
+  
+  <!-- 错误状态 -->
+  <view class="error-container" wx:elif="{{error}}">
+    <icon type="warn" size="64"></icon>
+    <text>加载失败</text>
+    <button class="retry-btn" bindtap="onRetryTap">重新加载</button>
+  </view>
+  
+  <!-- 卡片详情 -->
+  <block wx:elif="{{cardDetail}}">
+    <!-- 卡片头部 -->
+    <view class="card-header">
+      <image class="card-image" src="{{cardDetail.image}}" mode="aspectFill"></image>
+      <view class="card-info">
+        <view class="card-title">
+          <text class="card-name">{{cardDetail.name}}</text>
+          <view class="card-tags">
+            <text class="tag" wx:for="{{cardDetail.tags}}" wx:key="*this">{{item}}</text>
+          </view>
+        </view>
+        <view class="card-meta">
+          <view class="meta-item">
+            <text class="meta-label">银行</text>
+            <text class="meta-value">{{cardDetail.bankName}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-label">类型</text>
+            <text class="meta-value">{{cardDetail.categoryName}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-label">年费</text>
+            <text class="meta-value">{{cardDetail.annualFee}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-label">额度</text>
+            <text class="meta-value">{{cardDetail.creditLimit}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn apply-btn" bindtap="onApplyTap">立即申请</button>
+      <button class="action-btn collect-btn {{cardDetail.isCollected ? 'active' : ''}}" bindtap="onCollectTap">
+        <text class="iconfont {{cardDetail.isCollected ? 'icon-star-filled' : 'icon-star'}}"></text>
+        <text>{{cardDetail.isCollected ? '已收藏' : '收藏'}}</text>
+      </button>
+      <button class="action-btn compare-btn {{cardDetail.isComparing ? 'active' : ''}}" bindtap="onCompareTap">
+        <text class="iconfont {{cardDetail.isComparing ? 'icon-compare-filled' : 'icon-compare'}}"></text>
+        <text>{{cardDetail.isComparing ? '对比中' : '对比'}}</text>
+      </button>
+    </view>
+    
+    <!-- 申请人数 -->
+    <view class="apply-count">
+      <text>{{cardDetail.applyCount}}人申请</text>
+    </view>
+    
+    <!-- 标签页导航 -->
+    <view class="tabs">
+      <view 
+        class="tab {{activeTab === item.id ? 'active' : ''}}" 
+        wx:for="{{tabs}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onTabTap"
+      >
+        {{item.name}}
+      </view>
+    </view>
+    
+    <!-- 标签页内容 -->
+    <view class="tab-content">
+      <!-- 卡片介绍 -->
+      <view class="tab-pane" hidden="{{activeTab !== 'intro'}}">
+        <view class="section">
+          <view class="section-title">卡片介绍</view>
+          <view class="section-content">
+            <text class="card-intro">{{cardDetail.intro}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 权益详情 -->
+      <view class="tab-pane" hidden="{{activeTab !== 'benefits'}}">
+        <view class="section" wx:for="{{cardDetail.benefits}}" wx:key="title">
+          <view class="section-title">{{item.title}}</view>
+          <view class="section-content">
+            <view class="benefit-item" wx:for="{{item.items}}" wx:for-item="benefit" wx:key="name">
+              <view class="benefit-name">{{benefit.name}}</view>
+              <view class="benefit-desc">{{benefit.desc}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 费用说明 -->
+      <view class="tab-pane" hidden="{{activeTab !== 'fees'}}">
+        <view class="section" wx:for="{{cardDetail.fees}}" wx:key="title">
+          <view class="section-title">{{item.title}}</view>
+          <view class="section-content">
+            <text>{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 申请条件 -->
+      <view class="tab-pane" hidden="{{activeTab !== 'apply'}}">
+        <view class="section" wx:for="{{cardDetail.applyConditions}}" wx:key="title">
+          <view class="section-title">{{item.title}}</view>
+          <view class="section-content">
+            <view class="condition-list">
+              <view class="condition-item" wx:for="{{item.items}}" wx:for-item="condition" wx:key="*this">
+                <text class="dot">•</text>
+                <text>{{condition}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        
+        <view class="section">
+          <view class="section-title">申请材料</view>
+          <view class="section-content">
+            <view class="condition-list">
+              <view class="condition-item" wx:for="{{cardDetail.applyMaterials}}" wx:key="*this">
+                <text class="dot">•</text>
+                <text>{{item}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 对比面板 -->
+    <view class="compare-panel {{showCompare ? 'show' : ''}}">
+      <view class="compare-header">
+        <text>信用卡对比</text>
+        <text class="close-btn" bindtap="toggleCompare">×</text>
+      </view>
+      <view class="compare-content">
+        <view class="compare-card current">
+          <image class="compare-card-image" src="{{cardDetail.image}}" mode="aspectFit"></image>
+          <text class="compare-card-name">{{cardDetail.name}}</text>
+        </view>
+        <view class="compare-card" wx:for="{{compareCards}}" wx:key="id">
+          <image class="compare-card-image" src="{{item.image}}" mode="aspectFit"></image>
+          <text class="compare-card-name">{{item.name}}</text>
+        </view>
+        <view class="compare-card add-card" wx:if="{{compareCards.length < 2}}">
+          <view class="add-icon">+</view>
+          <text>添加卡片</text>
+        </view>
+      </view>
+      <button class="view-compare-btn" bindtap="onViewCompareTap">查看详细对比</button>
+    </view>
+    
+    <!-- 对比浮动按钮 -->
+    <view class="compare-float-btn {{cardDetail.isComparing ? 'active' : ''}}" bindtap="toggleCompare">
+      <text class="iconfont icon-compare"></text>
+      <text>对比</text>
+    </view>
+  </block>
+</view>

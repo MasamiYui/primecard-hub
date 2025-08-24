@@ -1,0 +1,205 @@
+/* pages/profile/profile.wxss */
+
+/* 容器 */
+.container {
+  padding: 0;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+/* 加载中 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loading {
+  width: 80rpx;
+  height: 80rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #3B82F6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 用户信息 */
+.user-info-section {
+  background-color: white;
+  padding: 40rpx 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  margin-right: 30rpx;
+  background-color: #f0f0f0;
+}
+
+.user-detail {
+  flex: 1;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.edit-profile {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+}
+
+.login-tip {
+  font-size: 32rpx;
+  color: #666;
+  display: block;
+}
+
+.login-btn, .logout-btn {
+  width: 180rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  text-align: center;
+  font-size: 28rpx;
+  border-radius: 35rpx;
+  padding: 0;
+  margin: 0;
+}
+
+.login-btn {
+  background-color: #3B82F6;
+  color: white;
+}
+
+.logout-btn {
+  background-color: #f5f7fa;
+  color: #666;
+}
+
+/* 统计信息 */
+.statistics-section {
+  display: flex;
+  background-color: white;
+  padding: 30rpx 0;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.statistic-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.statistic-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 2rpx;
+  background-color: #eee;
+}
+
+.statistic-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.statistic-label {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+}
+
+/* 功能列表 */
+.functions-section {
+  margin-bottom: 40rpx;
+}
+
+.function-group {
+  margin-bottom: 20rpx;
+  background-color: white;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.group-title {
+  font-size: 28rpx;
+  color: #999;
+  padding: 20rpx 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.function-list {
+  padding: 0 30rpx;
+}
+
+.function-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 0;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.function-item:last-child {
+  border-bottom: none;
+}
+
+.function-icon {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.function-icon .iconfont {
+  font-size: 40rpx;
+  color: #3B82F6;
+}
+
+.function-name {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.icon-arrow-right {
+  font-size: 32rpx;
+  color: #ccc;
+}
+
+/* 版本信息 */
+.version-info {
+  text-align: center;
+  padding: 40rpx 0;
+  font-size: 24rpx;
+  color: #999;
+}

@@ -1,0 +1,133 @@
+<!-- pages/cards/cards.wxml -->
+<view class="container">
+  <!-- 顶部筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-item" bindtap="toggleFilter">
+      <text>筛选</text>
+      <view class="filter-icon {{showFilter ? 'active' : ''}}"></view>
+    </view>
+    
+    <scroll-view scroll-x class="category-scroll">
+      <view class="category-list">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="id" 
+          class="category-item {{currentCategory === item.id ? 'active' : ''}}" 
+          bindtap="onCategoryTap" 
+          data-id="{{item.id}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  
+  <!-- 筛选面板 -->
+  <view class="filter-panel {{showFilter ? 'show' : ''}}">
+    <view class="filter-section">
+      <view class="filter-title">银行</view>
+      <view class="filter-options">
+        <view 
+          wx:for="{{banks}}" 
+          wx:key="id" 
+          class="filter-option {{currentBank === item.id ? 'active' : ''}}" 
+          bindtap="onBankTap" 
+          data-id="{{item.id}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+    
+    <view class="filter-section">
+      <view class="filter-title">排序</view>
+      <view class="filter-options">
+        <view 
+          wx:for="{{sortOptions}}" 
+          wx:key="id" 
+          class="filter-option {{currentSort === item.id ? 'active' : ''}}" 
+          bindtap="onSortTap" 
+          data-id="{{item.id}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 信用卡列表 -->
+  <view class="card-list {{showFilter ? 'filter-open' : ''}}">
+    <block wx:if="{{cardList.length > 0}}">
+      <view 
+        wx:for="{{cardList}}" 
+        wx:key="id" 
+        class="card-item" 
+        bindtap="onCardItemTap" 
+        data-id="{{item.id}}"
+      >
+        <view class="card-header">
+          <view class="card-bank">{{item.bankName}}</view>
+          <view class="card-category">{{item.categoryName}}</view>
+        </view>
+        
+        <view class="card-body">
+          <image class="card-image" src="{{item.image}}" mode="aspectFit" lazy-load></image>
+          <view class="card-name">{{item.name}}</view>
+          
+          <view class="card-tags">
+            <view 
+              wx:for="{{item.tags}}" 
+              wx:for-item="tag" 
+              wx:key="*this" 
+              class="card-tag"
+            >
+              {{tag}}
+            </view>
+          </view>
+        </view>
+        
+        <view class="card-footer">
+          <view class="card-features">
+            <view class="feature-item">
+              <view class="feature-label">年费</view>
+              <view class="feature-value">{{item.annualFee}}</view>
+            </view>
+            <view class="feature-item">
+              <view class="feature-label">返现</view>
+              <view class="feature-value">{{item.cashback}}</view>
+            </view>
+            <view class="feature-item">
+              <view class="feature-label">积分</view>
+              <view class="feature-value">{{item.points}}倍</view>
+            </view>
+          </view>
+          
+          <view class="card-apply">
+            <view class="apply-count">{{item.applyCount}}人申请</view>
+            <button 
+              class="apply-button" 
+              catchtap="onApplyTap" 
+              data-id="{{item.id}}"
+            >立即申请</button>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 空状态 -->
+    <view wx:if="{{!loading && cardList.length === 0}}" class="empty-state">
+      <image class="empty-image" src="/images/empty.png" mode="aspectFit"></image>
+      <view class="empty-text">暂无相关信用卡</view>
+    </view>
+    
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-state">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">加载中...</view>
+    </view>
+    
+    <!-- 加载更多 -->
+    <view wx:if="{{!loading && hasMore}}" class="load-more">上拉加载更多</view>
+    <view wx:if="{{!loading && !hasMore && cardList.length > 0}}" class="no-more">没有更多内容了</view>
+  </view>
+</view>

@@ -1,0 +1,287 @@
+/* pages/index/index.wxss */
+
+/* 容器 */
+.container {
+  padding-bottom: 30rpx;
+}
+
+/* 加载中 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #3A7BF8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 20rpx;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 轮播图 */
+.banner {
+  width: 100%;
+  height: 350rpx;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 快捷入口 */
+.quick-nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 30rpx 20rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  border-radius: 0 0 12rpx 12rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.quick-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quick-nav-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-bottom: 10rpx;
+  background-color: rgba(58, 123, 248, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.quick-nav-icon::before {
+  content: '';
+  width: 40rpx;
+  height: 40rpx;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.news-icon::before {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0E3QkY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1maWxlLXRleHQiPjxwYXRoIGQ9Ik0xNCAySDZhMiAyIDAgMCAwLTIgMnYxNmEyIDIgMCAwIDAgMiAyaDEyYTIgMiAwIDAgMCAyLTJWOHoiPjwvcGF0aD48cG9seWxpbmUgcG9pbnRzPSIxNCAyIDE0IDggMjAgOCI+PC9wb2x5bGluZT48bGluZSB4MT0iMTYiIHkxPSIxMyIgeDI9IjgiIHkyPSIxMyI+PC9saW5lPjxsaW5lIHgxPSIxNiIgeTE9IjE3IiB4Mj0iOCIgeTI9IjE3Ij48L2xpbmU+PHBvbHlsaW5lIHBvaW50cz0iMTAgOSA5IDkgOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==');
+}
+
+.card-icon::before {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0E3QkY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1jcmVkaXQtY2FyZCI+PHJlY3QgeD0iMSIgeT0iNCIgd2lkdGg9IjIyIiBoZWlnaHQ9IjE2IiByeD0iMiIgcnk9IjIiPjwvcmVjdD48bGluZSB4MT0iMSIgeTE9IjEwIiB4Mj0iMjMiIHkyPSIxMCI+PC9saW5lPjwvc3ZnPg==');
+}
+
+.apply-icon::before {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0E3QkY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1lZGl0Ij48cGF0aCBkPSJNMTEgNEg0YTIgMiAwIDAgMC0yIDJ2MTRhMiAyIDAgMCAwIDIgMmgxNGEyIDIgMCAwIDAgMi0ydi03Ij48L3BhdGg+PHBhdGggZD0iTTE4LjUgMi41YTIuMTIxIDIuMTIxIDAgMCAxIDMgM0wxMiAxNWwtNCAxIDEtNGw5LjUtOS41eiI+PC9wYXRoPjwvc3ZnPg==');
+}
+
+.compare-icon::before {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM0E3QkY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1saXN0Ij48bGluZSB4MT0iOCIgeTE9IjYiIHgyPSIyMSIgeTI9IjYiPjwvbGluZT48bGluZSB4MT0iOCIgeTE9IjEyIiB4Mj0iMjEiIHkyPSIxMiI+PC9saW5lPjxsaW5lIHgxPSI4IiB5MT0iMTgiIHgyPSIyMSIgeTI9IjE4Ij48L2xpbmU+PGxpbmUgeDE9IjMiIHkxPSI2IiB4Mj0iMyIgeTI9IjYiPjwvbGluZT48bGluZSB4MT0iMyIgeTE9IjEyIiB4Mj0iMyIgeTI9IjEyIj48L2xpbmU+PGxpbmUgeDE9IjMiIHkxPSIxOCIgeDI9IjMiIHkyPSIxOCI+PC9saW5lPjwvc3ZnPg==');
+}
+
+.quick-nav-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 内容区域 */
+.section {
+  margin: 20rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  position: relative;
+  padding-left: 20rpx;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 30rpx;
+  background-color: #3A7BF8;
+  border-radius: 3rpx;
+}
+
+.section-more {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 资讯列表 */
+.news-list {
+  padding: 10rpx 0;
+}
+
+.news-item {
+  display: flex;
+  padding: 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.news-item:last-child {
+  border-bottom: none;
+}
+
+.news-image {
+  width: 200rpx;
+  height: 140rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.news-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 10rpx;
+}
+
+.news-summary {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 10rpx;
+}
+
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.news-date {
+  flex-shrink: 0;
+}
+
+.news-stats {
+  display: flex;
+}
+
+.news-views, .news-likes {
+  margin-left: 15rpx;
+}
+
+/* 信用卡列表 */
+.card-list {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 20rpx;
+  overflow-x: auto;
+}
+
+.card-item {
+  width: 300rpx;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+  border-radius: 12rpx;
+  background-color: #fff;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.card-item:last-child {
+  margin-right: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 15rpx;
+}
+
+.bank-logo {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  margin-right: 10rpx;
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-name {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.4;
+}
+
+.bank-name {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.card-image {
+  width: 100%;
+  height: 180rpx;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 15rpx;
+  font-size: 22rpx;
+  color: #666;
+}
+
+.card-features {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 15rpx 15rpx;
+}

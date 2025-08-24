@@ -1,0 +1,7 @@
+<!-- components/loading/loading.wxml -->
+<view class="loading-container {{fullScreen ? 'full-screen' : ''}}">
+  <view class="loading-spinner {{size}}">
+    <view class="loading-bounce"></view>
+  </view>
+  <text class="loading-text {{size}}">{{text}}</text>
+</view>

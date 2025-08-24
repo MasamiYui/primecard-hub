@@ -1,0 +1,32 @@
+/* components/empty-state/empty-state.wxss */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 40rpx;
+}
+
+.empty-icon {
+  margin-bottom: 30rpx;
+}
+
+.empty-icon .iconfont {
+  font-size: 80rpx;
+  color: #ccc;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.empty-button {
+  background-color: #3B82F6;
+  color: white;
+  font-size: 28rpx;
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+}

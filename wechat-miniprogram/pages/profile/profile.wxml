@@ -1,0 +1,75 @@
+<!-- pages/profile/profile.wxml -->
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading"></view>
+    <text>加载中...</text>
+  </view>
+  
+  <!-- 用户信息 -->
+  <view class="user-info-section">
+    <view class="user-info" wx:if="{{isLogin}}">
+      <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+      <view class="user-detail">
+        <text class="nickname">{{userInfo.nickName}}</text>
+        <text class="edit-profile" bindtap="onEditProfileTap">编辑资料</text>
+      </view>
+      <button class="logout-btn" bindtap="onLogoutTap">退出登录</button>
+    </view>
+    
+    <view class="user-info not-login" wx:else>
+      <image class="avatar" src="/images/default-avatar.png"></image>
+      <view class="user-detail">
+        <text class="login-tip">登录后体验更多功能</text>
+      </view>
+      <button class="login-btn" bindtap="onLoginTap">立即登录</button>
+    </view>
+  </view>
+  
+  <!-- 统计信息 -->
+  <view class="statistics-section" wx:if="{{isLogin}}">
+    <view class="statistic-item">
+      <text class="statistic-value">{{statistics.cardCount}}</text>
+      <text class="statistic-label">我的卡片</text>
+    </view>
+    <view class="statistic-item">
+      <text class="statistic-value">{{statistics.collectionCount}}</text>
+      <text class="statistic-label">收藏卡片</text>
+    </view>
+    <view class="statistic-item">
+      <text class="statistic-value">{{statistics.favoriteCount}}</text>
+      <text class="statistic-label">收藏资讯</text>
+    </view>
+    <view class="statistic-item">
+      <text class="statistic-value">{{statistics.historyCount}}</text>
+      <text class="statistic-label">浏览历史</text>
+    </view>
+  </view>
+  
+  <!-- 功能列表 -->
+  <view class="functions-section">
+    <view class="function-group" wx:for="{{functionGroups}}" wx:key="title" wx:for-item="group">
+      <view class="group-title">{{group.title}}</view>
+      <view class="function-list">
+        <view 
+          class="function-item" 
+          wx:for="{{group.functions}}" 
+          wx:key="id" 
+          data-url="{{item.url}}" 
+          bindtap="onFunctionTap"
+        >
+          <view class="function-icon">
+            <text class="iconfont {{item.icon}}"></text>
+          </view>
+          <text class="function-name">{{item.name}}</text>
+          <text class="iconfont icon-arrow-right"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>PrimeCard Hub v1.0.0</text>
+  </view>
+</view>

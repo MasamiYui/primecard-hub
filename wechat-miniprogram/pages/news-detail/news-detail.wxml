@@ -1,0 +1,78 @@
+<!-- pages/news-detail/news-detail.wxml -->
+<view class="container">
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="loading-spinner"></view>
+    <view class="loading-text">加载中...</view>
+  </view>
+  
+  <!-- 错误状态 -->
+  <view wx:elif="{{error}}" class="error-state">
+    <image class="error-image" src="/images/error.png" mode="aspectFit"></image>
+    <view class="error-text">加载失败，请稍后再试</view>
+    <button class="retry-button" bindtap="onRetryTap">重新加载</button>
+  </view>
+  
+  <!-- 资讯详情 -->
+  <block wx:elif="{{newsDetail}}">
+    <!-- 资讯头部 -->
+    <view class="news-header">
+      <view class="news-title">{{newsDetail.title}}</view>
+      <view class="news-meta">
+        <view class="news-author">{{newsDetail.author}}</view>
+        <view class="news-date">{{newsDetail.publishedAt}}</view>
+        <view class="news-category">{{newsDetail.categoryName}}</view>
+      </view>
+      <image class="news-cover" src="{{newsDetail.coverImage}}" mode="widthFix" lazy-load></image>
+    </view>
+    
+    <!-- 资讯内容 -->
+    <view class="news-content">
+      <rich-text nodes="{{newsDetail.content}}"></rich-text>
+    </view>
+    
+    <!-- 资讯底部 -->
+    <view class="news-footer">
+      <view class="news-stats">
+        <view class="news-views">
+          <image class="icon" src="/images/view.png" mode="aspectFit"></image>
+          <text>{{newsDetail.viewCount}}</text>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="news-actions">
+        <view class="action-item {{newsDetail.isLiked ? 'active' : ''}}" bindtap="onLikeTap">
+          <image class="icon" src="{{newsDetail.isLiked ? '/images/like_filled.png' : '/images/like.png'}}" mode="aspectFit"></image>
+          <text>{{newsDetail.likeCount}}</text>
+        </view>
+        
+        <view class="action-item {{newsDetail.isCollected ? 'active' : ''}}" bindtap="onCollectTap">
+          <image class="icon" src="{{newsDetail.isCollected ? '/images/star_filled.png' : '/images/star.png'}}" mode="aspectFit"></image>
+          <text>收藏</text>
+        </view>
+        
+        <view class="action-item" bindtap="onShareTap">
+          <image class="icon" src="/images/share.png" mode="aspectFit"></image>
+          <text>分享</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 相关推荐 -->
+    <view class="related-news">
+      <view class="section-title">相关推荐</view>
+      <view class="related-list">
+        <!-- 这里可以添加相关资讯列表 -->
+        <view class="related-item">
+          <view class="related-title">相关资讯标题1</view>
+          <image class="related-image" src="/images/placeholders/related.svg" mode="aspectFill"></image>
+        </view>
+        <view class="related-item">
+          <view class="related-title">相关资讯标题2</view>
+          <image class="related-image" src="/images/placeholders/related.svg" mode="aspectFill"></image>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

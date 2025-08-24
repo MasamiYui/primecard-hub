@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "PrimeCard Hub",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
+}

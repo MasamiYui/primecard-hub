@@ -1,0 +1,69 @@
+/* components/loading/loading.wxss */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+}
+
+.loading-container.full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  position: relative;
+  margin-bottom: 20rpx;
+}
+
+.loading-spinner.small {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.loading-spinner.large {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.loading-bounce {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #3B82F6;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: bounce 2.0s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+  } 
+  50% { 
+    transform: scale(1.0);
+  }
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.loading-text.small {
+  font-size: 24rpx;
+}
+
+.loading-text.large {
+  font-size: 32rpx;
+}

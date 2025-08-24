@@ -1,0 +1,315 @@
+/* pages/cards/cards.wxss */
+.container {
+  padding: 0;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 顶部筛选栏 */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #666;
+  border-right: 1px solid #eee;
+}
+
+.filter-icon {
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
+  border-top: 2px solid #666;
+  border-right: 2px solid #666;
+  transform: rotate(135deg);
+  transition: transform 0.3s;
+}
+
+.filter-icon.active {
+  transform: rotate(-45deg);
+}
+
+.category-scroll {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.category-list {
+  display: flex;
+  padding: 0 10px;
+}
+
+.category-item {
+  display: inline-block;
+  padding: 15px 10px;
+  font-size: 14px;
+  color: #666;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.category-item.active {
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+.category-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  right: 10px;
+  height: 3px;
+  background-color: #1a73e8;
+  border-radius: 3px 3px 0 0;
+}
+
+/* 筛选面板 */
+.filter-panel {
+  position: absolute;
+  top: 49px; /* 筛选栏高度 */
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: all 0.3s;
+  visibility: hidden;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.filter-panel.show {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.filter-section {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-option {
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #666;
+  background-color: #f5f7fa;
+  border-radius: 4px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.filter-option.active {
+  color: #fff;
+  background-color: #1a73e8;
+}
+
+/* 信用卡列表 */
+.card-list {
+  padding: 10px 15px;
+  transition: all 0.3s;
+}
+
+.card-list.filter-open {
+  padding-top: 0;
+}
+
+.card-item {
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card-bank {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.card-category {
+  font-size: 12px;
+  color: #1a73e8;
+  background-color: #f0f4ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.card-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-image {
+  width: 100%;
+  height: 160px;
+  margin-bottom: 10px;
+  background-color: #f0f0f0;
+}
+
+.card-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.card-tag {
+  font-size: 12px;
+  color: #ff6b00;
+  background-color: #fff5e6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.card-footer {
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.card-features {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-label {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.feature-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.card-apply {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.apply-count {
+  font-size: 12px;
+  color: #999;
+}
+
+.apply-button {
+  background-color: #1a73e8;
+  color: #fff;
+  font-size: 14px;
+  padding: 6px 15px;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.empty-image {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 15px;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 加载状态 */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1a73e8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 加载更多 */
+.load-more, .no-more {
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+  color: #999;
+}

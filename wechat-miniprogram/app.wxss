@@ -1,0 +1,169 @@
+/**app.wxss**/
+
+/* 全局样式 */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 容器 */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 0 0 20rpx 0;
+  box-sizing: border-box;
+}
+
+/* 卡片样式 */
+.card {
+  margin: 20rpx;
+  border-radius: 12rpx;
+  background-color: #fff;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* 标题样式 */
+.title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.4;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background-color: #eee;
+  margin: 20rpx 0;
+}
+
+/* 按钮样式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  background-color: #3A7BF8;
+  color: #fff;
+  font-weight: 500;
+  border: none;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #3A7BF8;
+  border: 1rpx solid #3A7BF8;
+}
+
+.btn-small {
+  height: 60rpx;
+  font-size: 24rpx;
+  padding: 0 20rpx;
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  font-size: 22rpx;
+  border-radius: 6rpx;
+  margin-right: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.tag-blue {
+  background-color: rgba(58, 123, 248, 0.1);
+  color: #3A7BF8;
+}
+
+.tag-green {
+  background-color: rgba(42, 190, 130, 0.1);
+  color: #2ABE82;
+}
+
+.tag-orange {
+  background-color: rgba(250, 173, 20, 0.1);
+  color: #FAAD14;
+}
+
+/* 列表样式 */
+.list {
+  background-color: #fff;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* 文本溢出省略 */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* 常用间距 */
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }
+.mt-30 { margin-top: 30rpx; }
+.mb-10 { margin-bottom: 10rpx; }
+.mb-20 { margin-bottom: 20rpx; }
+.mb-30 { margin-bottom: 30rpx; }
+.ml-10 { margin-left: 10rpx; }
+.ml-20 { margin-left: 20rpx; }
+.mr-10 { margin-right: 10rpx; }
+.mr-20 { margin-right: 20rpx; }
+
+/* 常用颜色 */
+.text-primary { color: #3A7BF8; }
+.text-success { color: #2ABE82; }
+.text-warning { color: #FAAD14; }
+.text-danger { color: #F5222D; }
+.text-gray { color: #999; }
+
+/* 常用字体大小 */
+.font-sm { font-size: 24rpx; }
+.font-md { font-size: 28rpx; }
+.font-lg { font-size: 32rpx; }
+.font-xl { font-size: 36rpx; }
+
+/* 常用布局 */
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.flex-wrap { flex-wrap: wrap; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.align-center { align-items: center; }
+.flex-1 { flex: 1; }

@@ -1,0 +1,441 @@
+/* pages/card-detail/card-detail.wxss */
+
+/* 容器 */
+.container {
+  padding: 0;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 100rpx;
+}
+
+/* 加载中 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loading {
+  width: 80rpx;
+  height: 80rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #3B82F6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 错误状态 */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0 40rpx;
+}
+
+.error-container text {
+  margin: 30rpx 0;
+  font-size: 32rpx;
+  color: #666;
+}
+
+.retry-btn {
+  background-color: #3B82F6;
+  color: white;
+  font-size: 28rpx;
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+  margin-top: 20rpx;
+}
+
+/* 卡片头部 */
+.card-header {
+  background-color: white;
+  border-radius: 0 0 20rpx 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  margin-bottom: 20rpx;
+}
+
+.card-image {
+  width: 100%;
+  height: 380rpx;
+  display: block;
+}
+
+.card-info {
+  padding: 30rpx;
+}
+
+.card-title {
+  margin-bottom: 20rpx;
+}
+
+.card-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10rpx;
+}
+
+.tag {
+  font-size: 22rpx;
+  color: #3B82F6;
+  background-color: rgba(59, 130, 246, 0.1);
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  margin-right: 16rpx;
+  margin-bottom: 10rpx;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  width: 50%;
+  margin-bottom: 20rpx;
+}
+
+.meta-label {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.meta-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  padding: 20rpx 30rpx;
+  background-color: white;
+  margin-bottom: 2rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+  border-radius: 40rpx;
+  margin: 0 10rpx;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apply-btn {
+  background-color: #3B82F6;
+  color: white;
+  flex: 2;
+}
+
+.collect-btn, .compare-btn {
+  background-color: #f5f7fa;
+  color: #666;
+}
+
+.collect-btn.active, .compare-btn.active {
+  color: #3B82F6;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.action-btn .iconfont {
+  margin-right: 6rpx;
+  font-size: 28rpx;
+}
+
+/* 申请人数 */
+.apply-count {
+  background-color: white;
+  padding: 0 30rpx 20rpx;
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  background-color: white;
+  margin-top: 20rpx;
+  border-bottom: 2rpx solid #eee;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
+  padding: 24rpx 0;
+  position: relative;
+}
+
+.tab.active {
+  color: #3B82F6;
+  font-weight: 500;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 6rpx;
+  background-color: #3B82F6;
+  border-radius: 3rpx;
+}
+
+/* 标签页内容 */
+.tab-content {
+  background-color: white;
+  padding: 30rpx;
+}
+
+.tab-pane {
+  min-height: 400rpx;
+}
+
+.section {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  position: relative;
+  padding-left: 20rpx;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6rpx;
+  width: 8rpx;
+  height: 28rpx;
+  background-color: #3B82F6;
+  border-radius: 4rpx;
+}
+
+.section-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 卡片介绍 */
+.card-intro {
+  white-space: pre-wrap;
+}
+
+/* 权益详情 */
+.benefit-item {
+  margin-bottom: 24rpx;
+  padding-bottom: 24rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.benefit-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.benefit-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.benefit-desc {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 申请条件 */
+.condition-list {
+  padding-left: 10rpx;
+}
+
+.condition-item {
+  display: flex;
+  margin-bottom: 16rpx;
+  align-items: flex-start;
+}
+
+.dot {
+  margin-right: 10rpx;
+  color: #3B82F6;
+  font-weight: bold;
+}
+
+/* 对比面板 */
+.compare-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.05);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: 100;
+  border-radius: 20rpx 20rpx 0 0;
+}
+
+.compare-panel.show {
+  transform: translateY(0);
+}
+
+.compare-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.compare-header text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-btn {
+  font-size: 40rpx;
+  color: #999;
+}
+
+.compare-content {
+  display: flex;
+  padding: 30rpx;
+  overflow-x: auto;
+}
+
+.compare-card {
+  width: 200rpx;
+  margin-right: 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.compare-card.current {
+  position: relative;
+}
+
+.compare-card.current::after {
+  content: '当前卡';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #3B82F6;
+  color: white;
+  font-size: 20rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 0 0 0 10rpx;
+}
+
+.compare-card-image {
+  width: 200rpx;
+  height: 120rpx;
+  border-radius: 10rpx;
+  margin-bottom: 10rpx;
+}
+
+.compare-card-name {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.add-card {
+  border: 2rpx dashed #ddd;
+  border-radius: 10rpx;
+  height: 120rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10rpx;
+}
+
+.add-icon {
+  font-size: 40rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+
+.view-compare-btn {
+  margin: 20rpx 30rpx 40rpx;
+  background-color: #3B82F6;
+  color: white;
+  font-size: 28rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+}
+
+/* 对比浮动按钮 */
+.compare-float-btn {
+  position: fixed;
+  right: 30rpx;
+  bottom: 100rpx;
+  background-color: white;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #666;
+  z-index: 99;
+}
+
+.compare-float-btn.active {
+  background-color: #3B82F6;
+  color: white;
+}
+
+.compare-float-btn .iconfont {
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+}

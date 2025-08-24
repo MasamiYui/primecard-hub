@@ -1,0 +1,12 @@
+<!-- components/empty-state/empty-state.wxml -->
+<view class="empty-container">
+  <view class="empty-icon">
+    <text class="iconfont {{icon}}"></text>
+  </view>
+  <text class="empty-text">{{text}}</text>
+  <button 
+    class="empty-button" 
+    wx:if="{{showButton}}" 
+    bindtap="onButtonTap"
+  >{{buttonText}}</button>
+</view>
