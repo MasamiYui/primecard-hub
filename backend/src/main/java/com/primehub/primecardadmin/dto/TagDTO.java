@@ -21,6 +21,11 @@ public class TagDTO {
 
     public TagDTO() {}
 
+    public TagDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public TagDTO(Long id, String name, String color, Integer usageCount, 
                   LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;

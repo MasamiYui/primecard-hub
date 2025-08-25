@@ -93,6 +93,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return true;
         }
         
+        // 排除C端新闻资讯接口
+        if (requestPath.startsWith("/api/client/news")) {
+            return true;
+        }
+        
         return false;
     }
 }
