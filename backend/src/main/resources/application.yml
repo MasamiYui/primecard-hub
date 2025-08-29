@@ -1,23 +1,26 @@
 spring:
+  profiles:
+    active: dev,test-data
   datasource:
-    url: jdbc:h2:file:./data/primecarddb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:mysql://rm-bp15echqdhbnl28412o.mysql.rds.aliyuncs.com:3306/primecardhub?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: primehubcardadmin
+    password: Masamiyui_1
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+  # 保留H2控制台配置，但禁用
   h2:
     console:
-      enabled: true
+      enabled: false
       path: /h2-console
       settings:
-        web-allow-others: true
+        web-allow-others: false
 
 # 应用配置
 server:
