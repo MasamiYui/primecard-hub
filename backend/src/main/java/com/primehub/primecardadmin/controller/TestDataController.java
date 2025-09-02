@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/test-data")
-@Profile({"dev", "test"})
+@Profile({"test-data", "test"})
 public class TestDataController {
 
     private final TestDataLoader testDataLoader;
