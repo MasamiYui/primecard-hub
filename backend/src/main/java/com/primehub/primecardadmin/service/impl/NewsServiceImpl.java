@@ -16,6 +16,8 @@ import com.primehub.primecardadmin.repository.TagRepository;
 import com.primehub.primecardadmin.repository.UserRepository;
 import com.primehub.primecardadmin.service.NewsService;
 import com.primehub.primecardadmin.service.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +41,8 @@ import java.util.stream.Collectors;
 @Service
 public class NewsServiceImpl implements NewsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(NewsServiceImpl.class);
+
     @Autowired
     private NewsRepository newsRepository;
     @Autowired
@@ -54,6 +58,9 @@ public class NewsServiceImpl implements NewsService {
     public PageResponseDTO<NewsDTO> getAllNews(int page, int size, String keyword, Long categoryId, 
                                               NewsStatus status, Long authorId, LocalDateTime startDate, 
                                               LocalDateTime endDate, List<Long> tagIds) {
+        logger.info("获取新闻列表 - 页码: {}, 大小: {}, 关键词: {}, 分类ID: {}, 状态: {}", 
+                   page, size, keyword, categoryId, status);
+        
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         
         Specification<News> spec = (root, query, criteriaBuilder) -> {
@@ -118,17 +125,28 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsDTO getNewsById(Long id) {
+        logger.info("获取新闻详情 - ID: {}", id);
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("资讯不存在"));
+                .orElseThrow(() -> {
+                    logger.warn("新闻不存在 - ID: {}", id);
+                    return new ResourceNotFoundException("资讯不存在");
+                });
+        logger.debug("成功获取新闻详情 - ID: {}, 标题: {}", id, news.getTitle());
         return convertToDTO(news);
     }
 
     @Override
     @Transactional
     public NewsDTO createNews(NewsCreateDTO newsCreateDTO) {
+        logger.info("创建新闻 - 标题: {}, 分类ID: {}, 状态: {}", 
+                   newsCreateDTO.getTitle(), newsCreateDTO.getCategoryId(), newsCreateDTO.getStatus());
+        
         // 获取分类
         Category category = categoryRepository.findById(newsCreateDTO.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("分类不存在"));
+                .orElseThrow(() -> {
+                    logger.error("分类不存在 - ID: {}", newsCreateDTO.getCategoryId());
+                    return new ResourceNotFoundException("分类不存在");
+                });
         
         // 获取作者 - 这里应该从当前登录用户获取，暂时使用ID为1的用户
         User author = userRepository.findById(1L)
@@ -160,6 +178,7 @@ public class NewsServiceImpl implements NewsService {
         news.setTags(tags);
         
         News savedNews = newsRepository.save(news);
+        logger.info("新闻创建成功 - ID: {}, 标题: {}", savedNews.getId(), savedNews.getTitle());
         return convertToDTO(savedNews);
     }
 
@@ -219,8 +238,14 @@ public class NewsServiceImpl implements NewsService {
     @Override
     @Transactional
     public void deleteNews(Long id) {
+        logger.info("删除新闻 - ID: {}", id);
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("资讯不存在"));
+                .orElseThrow(() -> {
+                    logger.warn("尝试删除不存在的新闻 - ID: {}", id);
+                    return new ResourceNotFoundException("资讯不存在");
+                });
+        
+        logger.debug("删除新闻: {} (ID: {}), 关联标签数: {}", news.getTitle(), id, news.getTags().size());
         
         // 减少标签使用计数
         for (Tag tag : news.getTags()) {
@@ -228,26 +253,37 @@ public class NewsServiceImpl implements NewsService {
         }
         
         newsRepository.delete(news);
+        logger.info("新闻删除成功 - ID: {}", id);
     }
 
     @Override
     @Transactional
     public NewsDTO updateNewsStatus(Long id, NewsStatus status) {
+        logger.info("更新新闻状态 - ID: {}, 新状态: {}", id, status);
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("资讯不存在"));
+                .orElseThrow(() -> {
+                    logger.warn("尝试更新不存在的新闻状态 - ID: {}", id);
+                    return new ResourceNotFoundException("资讯不存在");
+                });
         
+        NewsStatus oldStatus = news.getStatus();
         news.setStatus(status);
         news.setUpdatedAt(LocalDateTime.now());
         
         News updatedNews = newsRepository.save(news);
+        logger.info("新闻状态更新成功 - ID: {}, 从 {} 更新为 {}", id, oldStatus, status);
         return convertToDTO(updatedNews);
     }
 
     @Override
     @Transactional
     public void incrementViewCount(Long id) {
+        logger.debug("增加新闻浏览量 - ID: {}", id);
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("资讯不存在"));
+                .orElseThrow(() -> {
+                    logger.warn("尝试增加不存在新闻的浏览量 - ID: {}", id);
+                    return new ResourceNotFoundException("资讯不存在");
+                });
         
         news.setViewCount(news.getViewCount() + 1);
         newsRepository.save(news);
