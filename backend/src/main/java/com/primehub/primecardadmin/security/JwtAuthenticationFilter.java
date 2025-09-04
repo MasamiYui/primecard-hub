@@ -1,6 +1,8 @@
 package com.primehub.primecardadmin.security;
 
 import com.primehub.primecardadmin.util.JwtTokenUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +20,8 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
     @Autowired
@@ -29,9 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 排除不需要JWT认证的路径
         String requestPath = request.getRequestURI();
-        logger.debug("JWT过滤器处理请求路径: " + requestPath);
+        String clientIp = getClientIpAddress(request);
+        logger.debug("JWT过滤器处理请求 - 路径: {}, IP: {}", requestPath, clientIp);
+        
         if (shouldSkipFilter(requestPath)) {
-            logger.debug("跳过JWT认证，路径: " + requestPath);
+            logger.debug("跳过JWT认证 - 路径: {}", requestPath);
             chain.doFilter(request, response);
             return;
         }
@@ -46,11 +52,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                logger.debug("JWT Token解析成功 - 用户: {}", username);
             } catch (Exception e) {
-                logger.warn("JWT Token解析失败", e);
+                logger.warn("JWT Token解析失败 - IP: {}, Token前缀: {}", clientIp, 
+                           jwtToken.length() > 10 ? jwtToken.substring(0, 10) + "..." : jwtToken, e);
             }
         } else {
-            logger.debug("JWT Token不是以Bearer开头或不存在");
+            logger.debug("JWT Token格式无效或不存在 - IP: {}, Authorization头: {}", 
+                        clientIp, requestTokenHeader != null ? "存在但格式错误" : "不存在");
         }
 
         // 验证token
@@ -65,7 +74,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 
                 // 设置当前用户为已认证
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                logger.info("用户认证成功 - 用户: {}, IP: {}, 路径: {}", username, clientIp, requestPath);
+            } else {
+                logger.warn("JWT Token验证失败 - 用户: {}, IP: {}", username, clientIp);
             }
+        } else if (username != null) {
+            logger.debug("用户已认证，跳过重复认证 - 用户: {}", username);
         }
         chain.doFilter(request, response);
     }
@@ -99,5 +113,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         
         return false;
+    }
+
+    /**
+     * 获取客户端真实IP地址
+     */
+    private String getClientIpAddress(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty() && !"unknown".equalsIgnoreCase(xForwardedFor)) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        
+        String xRealIp = request.getHeader("X-Real-IP");
+        if (xRealIp != null && !xRealIp.isEmpty() && !"unknown".equalsIgnoreCase(xRealIp)) {
+            return xRealIp;
+        }
+        
+        return request.getRemoteAddr();
     }
 }

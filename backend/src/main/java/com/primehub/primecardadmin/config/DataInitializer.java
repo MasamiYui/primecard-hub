@@ -14,10 +14,10 @@ import java.util.HashSet;
 
 /**
  * 数据初始化器
- * 在开发环境下自动插入测试数据
+ * 在测试数据环境下自动插入测试数据
  */
 @Component
-@Profile("dev")
+@Profile("test-data")
 public class DataInitializer implements CommandLineRunner {
 
     @Autowired
