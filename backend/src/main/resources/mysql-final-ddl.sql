@@ -6,8 +6,8 @@
 -- ============================================================
 
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS primecarddb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE primecarddb;
+CREATE DATABASE IF NOT EXISTS primecardhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE primecardhub;
 
 -- ============================================================
 -- 管理端用户认证体系

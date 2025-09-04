@@ -28,7 +28,7 @@
     
     <!-- 资讯内容 -->
     <view class="news-content">
-      <rich-text nodes="{{newsDetail.content}}"></rich-text>
+      <markdown content="{{newsDetail.content}}" theme="light"></markdown>
     </view>
     
     <!-- 资讯底部 -->

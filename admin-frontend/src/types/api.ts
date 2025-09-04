@@ -178,11 +178,14 @@ export interface News {
   content: string
   summary: string
   imageUrl?: string
+  coverImage?: string
   status: string // DRAFT, PUBLISHED, ARCHIVED
   publishedAt?: string
   viewCount?: number
   author: string
   category?: Category
+  categoryId?: number
+  categoryName?: string
   tags?: Tag[]
   createdAt: string
   updatedAt: string
@@ -192,9 +195,9 @@ export interface NewsCreate {
   title: string
   content: string
   summary: string
-  imageUrl?: string
+  coverImage?: string
   status: string
-  categoryId?: number
+  categoryId: number  // 移除问号，使其成为必需字段
   tagIds?: number[]
 }
 

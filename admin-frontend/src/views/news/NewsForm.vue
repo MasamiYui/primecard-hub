@@ -28,12 +28,10 @@
         </el-form-item>
 
         <el-form-item label="内容" prop="content">
-          <el-input
-            type="textarea"
-            :rows="10"
+          <MarkdownEditor
             v-model="newsForm.content"
-            placeholder="请输入新闻内容 (Markdown格式)"
-          ></el-input>
+            height="500px"
+          />
         </el-form-item>
 
         <el-row :gutter="20">
@@ -68,8 +66,8 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="封面图片URL" prop="imageUrl">
-          <el-input v-model="newsForm.imageUrl" placeholder="请输入封面图片URL"></el-input>
+        <el-form-item label="封面图片URL" prop="coverImage">
+          <el-input v-model="newsForm.coverImage" placeholder="请输入封面图片URL"></el-input>
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -95,6 +93,7 @@ import { ElMessage } from 'element-plus'
 import { newsApi } from '@/api/news'
 import { categoryApi } from '@/api/category'
 import { tagApi } from '@/api/tag'
+import MarkdownEditor from '@/components/MarkdownEditor.vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { News, Category, Tag, NewsCreate } from '@/types/api'
 
@@ -105,13 +104,13 @@ const newsFormRef = ref<FormInstance>()
 const isEdit = computed(() => !!route.params.id)
 const loading = ref(false)
 
-const newsForm = ref<Partial<News & { categoryId?: number; tagIds?: number[] }>>({
+const newsForm = ref<Partial<News & { categoryId?: number; tagIds?: number[] }>>({  
   title: '',
   summary: '',
   content: '',
   categoryId: undefined,
   tagIds: [],
-  imageUrl: '',
+  coverImage: '',
   status: 'DRAFT',
 })
 
@@ -153,14 +152,17 @@ const fetchNewsDetails = async (id: number) => {
   try {
     const res = await newsApi.getById(id)
     if (res.data) {
-      const { category, tags: newsTags, ...rest } = res.data
+      const { category, categoryId, categoryName, tags: newsTags, ...rest } = res.data
       newsForm.value = {
         ...rest,
-        categoryId: category?.id,
+        categoryId: categoryId || category?.id || undefined,
         tagIds: newsTags?.map(tag => tag.id) || [],
       }
+      console.log('Fetched news details:', res.data) // 记录原始数据
+      console.log('Processed news form:', newsForm.value) // 记录处理后的表单数据
     }
   } catch (error) {
+    console.error('获取新闻详情失败:', error)
     ElMessage.error('获取新闻详情失败')
   } finally {
     loading.value = false
@@ -179,17 +181,25 @@ onMounted(() => {
 const handleSubmit = () => {
   newsFormRef.value?.validate(async (valid) => {
     if (valid) {
+      // 确保categoryId有值
+      if (!newsForm.value.categoryId) {
+        ElMessage.error('请选择分类')
+        return
+      }
+      
       loading.value = true
       try {
         const params: NewsCreate = {
           title: newsForm.value.title || '',
           summary: newsForm.value.summary || '',
           content: newsForm.value.content || '',
-          imageUrl: newsForm.value.imageUrl,
+          coverImage: newsForm.value.coverImage,
           status: newsForm.value.status || 'DRAFT',
           categoryId: newsForm.value.categoryId,
           tagIds: newsForm.value.tagIds,
         };
+        
+        console.log('Submitting news with params:', params); // 添加日志
 
         if (isEdit.value) {
           const newsId = Number(route.params.id)
@@ -199,9 +209,10 @@ const handleSubmit = () => {
           await newsApi.create(params as any) // 'any' is used because create expects NewsCreate type
           ElMessage.success('新闻创建成功')
         }
-        router.push('/news/list')
+        router.push('/news')
       } catch (error) {
-        ElMessage.error(isEdit.value ? '新闻更新失败' : '新闻创建失败')
+        console.error('提交新闻失败:', error); // 添加错误日志
+        ElMessage.error('提交失败')
       } finally {
         loading.value = false
       }

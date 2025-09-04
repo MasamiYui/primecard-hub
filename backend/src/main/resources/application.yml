@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev,test-data
   datasource:
-    url:
+    url: jdbc:mysql://rm-bp15echqdhbnl28412o.mysql.rds.aliyuncs.com:3306/primecardhub?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&allowPublicKeyRetrieval=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: primehubcardadmin
     password: Masamiyui_1

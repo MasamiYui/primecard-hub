@@ -41,45 +41,95 @@ Page({
   loadNewsDetail() {
     this.setData({ loading: true, error: false });
     
-    // 模拟数据，实际项目中应该从API获取
-    setTimeout(() => {
-      const newsDetail = this.generateMockNewsDetail();
-      
-      this.setData({
-        newsDetail,
-        loading: false
-      });
-      
-      // 设置页面标题
-      wx.setNavigationBarTitle({
-        title: newsDetail.title.substring(0, 12) + (newsDetail.title.length > 12 ? '...' : '')
-      });
-    }, 1000);
+    // 实际项目中从API获取
+    const apiUrl = `${app.globalData.apiBaseUrl}/api/news/${this.data.newsId}`;
     
-    // 实际API调用示例
-    // return request.get(`/news/${this.data.newsId}`)
-    //   .then(res => {
-    //     this.setData({
-    //       newsDetail: res.data,
-    //       loading: false
-    //     });
-    //     
-    //     // 设置页面标题
-    //     wx.setNavigationBarTitle({
-    //       title: res.data.title.substring(0, 12) + (res.data.title.length > 12 ? '...' : '')
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.error('加载资讯详情失败', err);
-    //     this.setData({ 
-    //       loading: false, 
-    //       error: true 
-    //     });
-    //     wx.showToast({
-    //       title: '加载数据失败',
-    //       icon: 'none'
-    //     });
+    request.get(apiUrl)
+      .then(res => {
+        if (res.code === 200 && res.data) {
+          // 使用towxml解析Markdown内容
+          const Towxml = require('../../miniprogram_npm/towxml/towxml');
+          const towxml = new Towxml();
+          
+          // 将Markdown转换为HTML
+          const markdownContent = res.data.content;
+          const parsedContent = towxml.toJson(markdownContent, 'markdown');
+          parsedContent.theme = 'light'; // 设置主题
+          
+          const newsDetail = {
+            id: res.data.id,
+            title: res.data.title,
+            author: res.data.authorName,
+            publishedAt: this.formatDate(res.data.publishTime || res.data.createdAt),
+            categoryName: res.data.categoryName,
+            coverImage: res.data.coverImage,
+            content: parsedContent, // 解析后的Markdown内容
+            viewCount: res.data.viewCount || 0,
+            likeCount: 0,
+            isLiked: false,
+            isCollected: false,
+            tags: res.data.tags || []
+          };
+          
+          this.setData({
+            newsDetail,
+            loading: false
+          });
+          
+          // 设置页面标题
+          wx.setNavigationBarTitle({
+            title: newsDetail.title.substring(0, 12) + (newsDetail.title.length > 12 ? '...' : '')
+          });
+          
+          // 增加浏览量
+          this.incrementViewCount();
+        } else {
+          this.setData({ loading: false, error: true });
+        }
+      })
+      .catch(err => {
+        console.error('加载资讯详情失败', err);
+        this.setData({ loading: false, error: true });
+      });
+      
+    // 模拟数据用于开发测试
+    // setTimeout(() => {
+    //   const newsDetail = this.generateMockNewsDetail();
+    //   
+    //   this.setData({
+    //     newsDetail,
+    //     loading: false
     //   });
+    //   
+    //   // 设置页面标题
+    //   wx.setNavigationBarTitle({
+    //     title: newsDetail.title.substring(0, 12) + (newsDetail.title.length > 12 ? '...' : '')
+    //   });
+    // }, 1000);
+  },
+  
+  // 实际API调用示例
+  // incrementViewCount() {
+  //   return request.post(`/news/${this.data.newsId}/view`)
+  //     .then(res => {
+  //       console.log('增加浏览量成功', res);
+  //     })
+  //     .catch(err => {
+  //       console.error('增加浏览量失败', err);
+  //     });
+  // },
+  
+  // 格式化日期
+  formatDate(dateStr) {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
   },
   
   // 点击重试
@@ -145,6 +195,13 @@ Page({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     });
+  },
+  
+  // 增加浏览量
+  incrementViewCount() {
+    // 模拟增加浏览量
+    console.log('增加浏览量');
+    // 实际项目中应调用API
   },
   
   // 生成模拟资讯详情数据
