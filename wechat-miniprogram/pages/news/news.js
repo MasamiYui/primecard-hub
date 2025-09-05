@@ -45,55 +45,49 @@ Page({
   loadNews(callback) {
     this.setData({ loading: true });
     
-    // 模拟数据，实际项目中应该从API获取
-    setTimeout(() => {
-      const newsList = this.generateMockNewsList();
-      
-      this.setData({
-        newsList,
-        loading: false,
-        hasMore: newsList.length >= this.data.pageSize
-      });
-      
-      if (callback && typeof callback === 'function') {
-        callback();
-      }
-    }, 1000);
+    // 从API获取新闻列表
+    const params = {
+      page: this.data.page - 1, // 后端分页从0开始
+      size: this.data.pageSize
+    };
     
-    // 实际API调用示例
-    // const params = {
-    //   page: this.data.page,
-    //   pageSize: this.data.pageSize
-    // };
-    // 
-    // if (this.data.currentCategory !== 0) {
-    //   params.categoryId = this.data.currentCategory;
-    // }
-    // 
-    // return request.get('/news', params)
-    //   .then(res => {
-    //     this.setData({
-    //       newsList: res.data.list,
-    //       loading: false,
-    //       hasMore: res.data.hasMore
-    //     });
-    //     
-    //     if (callback && typeof callback === 'function') {
-    //       callback();
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.error('加载资讯失败', err);
-    //     this.setData({ loading: false });
-    //     wx.showToast({
-    //       title: '加载数据失败',
-    //       icon: 'none'
-    //     });
-    //     
-    //     if (callback && typeof callback === 'function') {
-    //       callback();
-    //     }
-    //   });
+    if (this.data.currentCategory !== 0) {
+      params.categoryId = this.data.currentCategory;
+    }
+    
+    return request.get('/api/client/news', params)
+      .then(res => {
+        if (res.success && res.data) {
+          const newsList = res.data.content || [];
+          this.setData({
+            newsList,
+            loading: false,
+            hasMore: !res.data.last // Spring Data JPA的分页信息
+          });
+        } else {
+          this.setData({ loading: false });
+          wx.showToast({
+            title: '加载数据失败',
+            icon: 'none'
+          });
+        }
+        
+        if (callback && typeof callback === 'function') {
+          callback();
+        }
+      })
+      .catch(err => {
+        console.error('加载资讯失败', err);
+        this.setData({ loading: false });
+        wx.showToast({
+          title: '加载数据失败',
+          icon: 'none'
+        });
+        
+        if (callback && typeof callback === 'function') {
+          callback();
+        }
+      });
   },
   
   // 加载更多资讯
@@ -105,46 +99,47 @@ Page({
       loading: true
     });
     
-    // 模拟数据，实际项目中应该从API获取
-    setTimeout(() => {
-      const moreNews = this.generateMockNewsList();
-      
-      this.setData({
-        newsList: [...this.data.newsList, ...moreNews],
-        loading: false,
-        hasMore: moreNews.length >= this.data.pageSize
-      });
-    }, 1000);
+    // 从API获取更多新闻
+    const params = {
+      page: this.data.page - 1, // 后端分页从0开始
+      size: this.data.pageSize
+    };
     
-    // 实际API调用示例
-    // const params = {
-    //   page: this.data.page,
-    //   pageSize: this.data.pageSize
-    // };
-    // 
-    // if (this.data.currentCategory !== 0) {
-    //   params.categoryId = this.data.currentCategory;
-    // }
-    // 
-    // return request.get('/news', params)
-    //   .then(res => {
-    //     this.setData({
-    //       newsList: [...this.data.newsList, ...res.data.list],
-    //       loading: false,
-    //       hasMore: res.data.hasMore
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.error('加载更多资讯失败', err);
-    //     this.setData({
-    //       page: this.data.page - 1,
-    //       loading: false
-    //     });
-    //     wx.showToast({
-    //       title: '加载数据失败',
-    //       icon: 'none'
-    //     });
-    //   });
+    if (this.data.currentCategory !== 0) {
+      params.categoryId = this.data.currentCategory;
+    }
+    
+    return request.get('/api/client/news', params)
+      .then(res => {
+        if (res.success && res.data) {
+          const moreNews = res.data.content || [];
+          this.setData({
+            newsList: [...this.data.newsList, ...moreNews],
+            loading: false,
+            hasMore: !res.data.last
+          });
+        } else {
+          this.setData({
+            page: this.data.page - 1,
+            loading: false
+          });
+          wx.showToast({
+            title: '加载数据失败',
+            icon: 'none'
+          });
+        }
+      })
+      .catch(err => {
+        console.error('加载更多资讯失败', err);
+        this.setData({
+          page: this.data.page - 1,
+          loading: false
+        });
+        wx.showToast({
+          title: '加载数据失败',
+          icon: 'none'
+        });
+      });
   },
   
   // 切换分类

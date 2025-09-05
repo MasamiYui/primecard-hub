@@ -41,21 +41,12 @@ Page({
   loadNewsDetail() {
     this.setData({ loading: true, error: false });
     
-    // 实际项目中从API获取
-    const apiUrl = `${app.globalData.apiBaseUrl}/api/news/${this.data.newsId}`;
+    // 从API获取新闻详情
+    const apiUrl = `/api/client/news/${this.data.newsId}`;
     
     request.get(apiUrl)
       .then(res => {
-        if (res.code === 200 && res.data) {
-          // 使用towxml解析Markdown内容
-          const Towxml = require('../../miniprogram_npm/towxml/towxml');
-          const towxml = new Towxml();
-          
-          // 将Markdown转换为HTML
-          const markdownContent = res.data.content;
-          const parsedContent = towxml.toJson(markdownContent, 'markdown');
-          parsedContent.theme = 'light'; // 设置主题
-          
+        if (res.success && res.data) {
           const newsDetail = {
             id: res.data.id,
             title: res.data.title,
@@ -63,7 +54,7 @@ Page({
             publishedAt: this.formatDate(res.data.publishTime || res.data.createdAt),
             categoryName: res.data.categoryName,
             coverImage: res.data.coverImage,
-            content: parsedContent, // 解析后的Markdown内容
+            content: res.data.content || '', // 直接使用Markdown内容字符串
             viewCount: res.data.viewCount || 0,
             likeCount: 0,
             isLiked: false,

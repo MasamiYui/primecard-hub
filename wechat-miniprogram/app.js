@@ -3,7 +3,7 @@ App({
   globalData: {
     userInfo: null,
     isLoggedIn: false,
-    baseUrl: 'http://localhost:3000/api', // 开发环境API地址，上线前需修改
+    baseUrl: 'http://localhost:8080/api', // 开发环境API地址，上线前需修改
     version: '1.0.0'
   },
   

@@ -8,7 +8,7 @@
   
   <!-- 错误状态 -->
   <view wx:elif="{{error}}" class="error-state">
-    <image class="error-image" src="/images/error.png" mode="aspectFit"></image>
+    <image class="error-image" src="/images/placeholders/news.svg" mode="aspectFit"></image>
     <view class="error-text">加载失败，请稍后再试</view>
     <button class="retry-button" bindtap="onRetryTap">重新加载</button>
   </view>
@@ -35,7 +35,7 @@
     <view class="news-footer">
       <view class="news-stats">
         <view class="news-views">
-          <image class="icon" src="/images/view.png" mode="aspectFit"></image>
+          <image class="icon" src="/images/view.svg" mode="aspectFit"></image>
           <text>{{newsDetail.viewCount}}</text>
         </view>
       </view>
@@ -43,17 +43,17 @@
       <!-- 操作按钮 -->
       <view class="news-actions">
         <view class="action-item {{newsDetail.isLiked ? 'active' : ''}}" bindtap="onLikeTap">
-          <image class="icon" src="{{newsDetail.isLiked ? '/images/like_filled.png' : '/images/like.png'}}" mode="aspectFit"></image>
+          <image class="icon" src="{{newsDetail.isLiked ? '/images/like_filled.svg' : '/images/like.svg'}}" mode="aspectFit"></image>
           <text>{{newsDetail.likeCount}}</text>
         </view>
         
         <view class="action-item {{newsDetail.isCollected ? 'active' : ''}}" bindtap="onCollectTap">
-          <image class="icon" src="{{newsDetail.isCollected ? '/images/star_filled.png' : '/images/star.png'}}" mode="aspectFit"></image>
+          <image class="icon" src="{{newsDetail.isCollected ? '/images/star_filled.svg' : '/images/star.svg'}}" mode="aspectFit"></image>
           <text>收藏</text>
         </view>
         
         <view class="action-item" bindtap="onShareTap">
-          <image class="icon" src="/images/share.png" mode="aspectFit"></image>
+          <image class="icon" src="/images/share.svg" mode="aspectFit"></image>
           <text>分享</text>
         </view>
       </view>

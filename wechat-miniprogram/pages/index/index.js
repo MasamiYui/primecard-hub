@@ -106,49 +106,20 @@ Page({
   
   // 加载资讯
   loadNews() {
-    // 模拟数据，实际项目中应该从API获取
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.setData({
-          newsList: [
-            {
-              id: 1,
-              title: '招商银行信用卡新户专享优惠',
-              summary: '招商银行推出新户专享优惠活动，首刷即享好礼！',
-              coverImage: '/images/placeholders/news.svg',
-              publishedAt: '2024-05-15 10:00:00',
-              viewCount: 1250,
-              likeCount: 36
-            },
-            {
-              id: 2,
-              title: '中信银行信用卡5月优惠活动汇总',
-              summary: '中信银行信用卡5月优惠活动汇总，包括餐饮、电影、购物等多个品类。',
-              coverImage: '/images/placeholders/news.svg',
-              publishedAt: '2024-05-14 14:30:00',
-              viewCount: 980,
-              likeCount: 28
-            },
-            {
-              id: 3,
-              title: '平安银行信用卡申请攻略',
-              summary: '平安银行信用卡申请攻略，教你如何提高信用卡申请通过率。',
-              coverImage: '/images/placeholders/news.svg',
-              publishedAt: '2024-05-13 09:15:00',
-              viewCount: 1560,
-              likeCount: 42
-            }
-          ]
-        });
-        resolve();
-      }, 600);
-    });
-    
-    // 实际API调用示例
-    // return request.get('/news', { limit: 3 })
-    //   .then(res => {
-    //     this.setData({ newsList: res.data });
-    //   });
+    // 从API获取推荐新闻
+    return request.get('/api/client/news/recommended')
+      .then(res => {
+        if (res.success && res.data) {
+          // 只取前3条新闻
+          const newsList = res.data.slice(0, 3);
+          this.setData({ newsList });
+        }
+      })
+      .catch(err => {
+        console.error('加载推荐新闻失败', err);
+        // 如果API失败，使用空数组
+        this.setData({ newsList: [] });
+      });
   },
   
   // 加载信用卡

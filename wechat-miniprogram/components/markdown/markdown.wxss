@@ -1,0 +1,30 @@
+/* components/markdown/markdown.wxss */
+.markdown-container {
+  width: 100%;
+  line-height: 1.6;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 浅色主题 */
+.markdown-container.light {
+  background-color: #fff;
+  color: #333;
+}
+
+/* 深色主题 */
+.markdown-container.dark {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+/* 富文本内容样式 */
+.markdown-container rich-text {
+  width: 100%;
+  display: block;
+}
+
+/* 深色主题下的富文本样式 */
+.markdown-container.dark rich-text {
+  color: #e0e0e0;
+}

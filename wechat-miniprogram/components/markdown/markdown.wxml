@@ -1,0 +1,4 @@
+<!-- components/markdown/markdown.wxml -->
+<view class="markdown-container {{theme}}">
+  <rich-text nodes="{{parsedContent}}"></rich-text>
+</view>
