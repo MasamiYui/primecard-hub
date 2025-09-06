@@ -20,15 +20,16 @@
         <el-form-item label="轮播图片" prop="imageUrl">
           <el-upload
             class="banner-upload"
-            action="/api/upload"
+            action="/api/files/oss/upload?type=banner"
             :show-file-list="false"
             :on-success="handleUploadSuccess"
             :before-upload="beforeUpload"
+            :headers="uploadHeaders"
           >
             <img v-if="bannerForm.imageUrl" :src="bannerForm.imageUrl" class="banner-image" />
             <el-icon v-else class="banner-uploader-icon"><Plus /></el-icon>
           </el-upload>
-          <div class="upload-tip">建议尺寸: 1200 x 400 像素，格式: JPG/PNG</div>
+          <div class="upload-tip">建议尺寸: 1200 x 400 像素，格式: JPG/PNG，文件将上传到阿里云OSS</div>
         </el-form-item>
 
         <el-form-item label="链接类型" prop="linkType">
@@ -170,13 +171,21 @@ import { Plus } from '@element-plus/icons-vue'
 import { bannerApi } from '@/api/banner'
 import { newsApi } from '@/api/news'
 import { creditCardApi } from '@/api/creditCard'
+import { useAuthStore } from '@/stores/auth'
 import { BannerStatus, BannerLinkType } from '@/types/api'
 import type { BannerCreate, News, CreditCard } from '@/types/api'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
+
+// 上传请求头
+const uploadHeaders = computed(() => ({
+  'Authorization': `Bearer ${authStore.token || localStorage.getItem('token')}`,
+  'Accept': 'application/json'
+}))
 
 // 选择器数据
 const newsList = ref<News[]>([])
@@ -330,24 +339,34 @@ const submitForm = async () => {
 
 // 上传前验证
 const beforeUpload = (file: File) => {
-  const isImage = file.type === 'image/jpeg' || file.type === 'image/png'
-  const isLt2M = file.size / 1024 / 1024 < 2
+  const isImage = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/webp'
+  const isLt10M = file.size / 1024 / 1024 < 10
 
   if (!isImage) {
-    ElMessage.error('上传图片只能是JPG或PNG格式!')
+    ElMessage.error('上传图片只能是JPG/PNG/WEBP格式!')
     return false
   }
-  if (!isLt2M) {
-    ElMessage.error('上传图片大小不能超过2MB!')
+  if (!isLt10M) {
+    ElMessage.error('上传图片大小不能超过10MB!')
     return false
   }
+  
+  // 显示上传中提示
+  ElMessage.info('正在上传到阿里云OSS...')
   return true
 }
 
 // 上传成功回调
 const handleUploadSuccess = (response: any) => {
+  console.log('上传成功响应:', response)
   // 根据实际接口返回格式调整
-  bannerForm.imageUrl = response.data.url
+  if (response && response.data && response.data.fileUrl) {
+    bannerForm.imageUrl = response.data.fileUrl
+    ElMessage.success('图片上传成功')
+  } else {
+    console.error('响应格式错误，期望的字段：fileUrl，实际响应：', response)
+    ElMessage.error('图片上传失败：响应格式错误')
+  }
 }
 
 // 返回列表页

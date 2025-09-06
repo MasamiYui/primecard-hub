@@ -38,6 +38,19 @@ file:
   upload-dir: ./uploads
   max-size: 10MB
   allowed-types: image/jpeg,image/png,image/gif,application/pdf
+
+# 阿里云OSS配置
+oss:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  access-key-id:
+  access-key-secret:
+  bucket-name: primecardhub
+  url-prefix: https://primecardhub.oss-cn-beijing.aliyuncs.com/
+  # 文件路径前缀
+  path-prefix:
+    banner: banner/
+    news: news/
+    avatar: avatar/
   
 # 跨域配置
 cors:

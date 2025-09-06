@@ -66,8 +66,29 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="封面图片URL" prop="coverImage">
-          <el-input v-model="newsForm.coverImage" placeholder="请输入封面图片URL"></el-input>
+        <el-form-item label="封面图片" prop="coverImage">
+          <div class="cover-image-upload">
+            <el-upload
+              class="image-uploader"
+              action="/api/news/upload"
+              :show-file-list="false"
+              :on-success="handleImageUploadSuccess"
+              :before-upload="beforeImageUpload"
+              :headers="uploadHeaders"
+            >
+              <img v-if="newsForm.coverImage" :src="newsForm.coverImage" class="uploaded-image" />
+              <el-icon v-else class="image-uploader-icon"><Plus /></el-icon>
+            </el-upload>
+            <div class="upload-tips">
+              <p>建议尺寸: 800 x 450 像素</p>
+              <p>支持格式: JPG/PNG/WEBP，文件将上传到阿里云OSS</p>
+            </div>
+          </div>
+          <el-input 
+            v-model="newsForm.coverImage" 
+            placeholder="或直接输入图片URL"
+            style="margin-top: 10px"
+          />
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -90,19 +111,28 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 import { newsApi } from '@/api/news'
 import { categoryApi } from '@/api/category'
 import { tagApi } from '@/api/tag'
+import { useAuthStore } from '@/stores/auth'
 import MarkdownEditor from '@/components/MarkdownEditor.vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { News, Category, Tag, NewsCreate } from '@/types/api'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 
 const newsFormRef = ref<FormInstance>()
 const isEdit = computed(() => !!route.params.id)
 const loading = ref(false)
+
+// 上传请求头
+const uploadHeaders = computed(() => ({
+  'Authorization': `Bearer ${authStore.token || localStorage.getItem('token')}`,
+  'Accept': 'application/json'
+}))
 
 const newsForm = ref<Partial<News & { categoryId?: number; tagIds?: number[] }>>({  
   title: '',
@@ -223,6 +253,36 @@ const handleSubmit = () => {
 const handleCancel = () => {
   router.push('/news/list')
 }
+
+// 图片上传前验证
+const beforeImageUpload = (file: File) => {
+  const isImage = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/webp'
+  const isLt10M = file.size / 1024 / 1024 < 10
+
+  if (!isImage) {
+    ElMessage.error('上传图片只能是JPG/PNG/WEBP格式!')
+    return false
+  }
+  if (!isLt10M) {
+    ElMessage.error('上传图片大小不能超过10MB!')
+    return false
+  }
+  
+  ElMessage.info('正在上传到阿里云OSS...')
+  return true
+}
+
+// 图片上传成功回调
+const handleImageUploadSuccess = (response: any) => {
+  console.log('新闻图片上传成功响应:', response)
+  if (response && response.data && response.data.fileUrl) {
+    newsForm.value.coverImage = response.data.fileUrl
+    ElMessage.success('封面图片上传成功')
+  } else {
+    console.error('响应格式错误，期望的字段：fileUrl，实际响应：', response)
+    ElMessage.error('图片上传失败：响应格式错误')
+  }
+}
 </script>
 
 <style scoped>
@@ -233,5 +293,56 @@ const handleCancel = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.cover-image-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.image-uploader {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+  width: 200px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-uploader:hover {
+  border-color: #409eff;
+}
+
+.image-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-tips {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #606266;
+  line-height: 1.4;
+}
+
+.upload-tips p {
+  margin: 2px 0;
 }
 </style>
