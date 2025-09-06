@@ -246,3 +246,55 @@ export interface QueryParams {
   search?: string
   [key: string]: any
 }
+
+// 轮播图链接类型
+export enum BannerLinkType {
+  NONE = 'NONE',
+  CARD = 'CARD',
+  NEWS = 'NEWS',
+  EXTERNAL = 'EXTERNAL',
+  MINIPROGRAM = 'MINIPROGRAM'
+}
+
+// 轮播图状态
+export enum BannerStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE'
+}
+
+// 轮播图类型
+export interface Banner {
+  id: number
+  title: string
+  imageUrl: string
+  linkType: BannerLinkType
+  linkUrl?: string
+  linkId?: number
+  linkAppid?: string
+  linkPage?: string
+  sortOrder: number
+  status: BannerStatus
+  startTime?: string
+  endTime?: string
+  viewCount: number
+  clickCount: number
+  createdById?: number
+  createdByUsername?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// 创建轮播图请求类型
+export interface BannerCreate {
+  title: string
+  imageUrl: string
+  linkType: BannerLinkType
+  linkUrl?: string
+  linkId?: number
+  linkAppid?: string
+  linkPage?: string
+  sortOrder?: number
+  status?: BannerStatus
+  startTime?: string
+  endTime?: string
+}

@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import Editor from '@bytemd/vue-next'
+import { Editor } from '@bytemd/vue-next'
 import gfm from '@bytemd/plugin-gfm'
 import highlight from '@bytemd/plugin-highlight'
 import gemoji from '@bytemd/plugin-gemoji'

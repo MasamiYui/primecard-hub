@@ -40,18 +40,22 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     const { data } = response
+    console.log('响应拦截器 - 原始响应:', response.config.url, data)
     
     // 如果是文件下载等特殊情况，直接返回
     if (response.config.responseType === 'blob') {
+      console.log('响应拦截器 - 文件下载，直接返回')
       return response
     }
     
     // 正常业务响应
     if (data.code === 200 || data.success) {
+      console.log('响应拦截器 - 业务成功，返回data:', data)
       return data
     }
     
     // 业务错误
+    console.error('响应拦截器 - 业务错误:', data.message || '请求失败')
     ElMessage.error(data.message || '请求失败')
     return Promise.reject(new Error(data.message || '请求失败'))
   },

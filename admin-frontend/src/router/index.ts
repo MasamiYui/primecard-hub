@@ -16,6 +16,7 @@ const NewsList = () => import('@/views/news/NewsList.vue')
 const CategoryList = () => import('@/views/category/CategoryList.vue')
 const UserList = () => import('@/views/user/UserList.vue')
 const Profile = () => import('@/views/profile/Profile.vue')
+const BannerList = () => import('@/views/banner/BannerList.vue')
 
 const routes: RouteRecordRaw[] = [
   {
@@ -102,6 +103,31 @@ const routes: RouteRecordRaw[] = [
         name: 'Profile',
         component: Profile,
         meta: { title: '个人资料', hideInMenu: true },
+      },
+      {
+        path: 'banners',
+        name: 'Banners',
+        meta: { title: '轮播图管理', icon: 'Picture' },
+        children: [
+          {
+            path: '',
+            name: 'BannerList',
+            component: BannerList,
+            meta: { title: '轮播图列表' },
+          },
+          {
+            path: 'create',
+            name: 'BannerCreate',
+            component: () => import('@/views/banner/BannerForm.vue'),
+            meta: { title: '新增轮播图', hideInMenu: true },
+          },
+          {
+            path: 'edit/:id',
+            name: 'BannerEdit',
+            component: () => import('@/views/banner/BannerForm.vue'),
+            meta: { title: '编辑轮播图', hideInMenu: true },
+          },
+        ],
       },
     ],
   },
