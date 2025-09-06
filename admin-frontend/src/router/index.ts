@@ -127,6 +127,12 @@ const routes: RouteRecordRaw[] = [
             component: () => import('@/views/banner/BannerForm.vue'),
             meta: { title: '编辑轮播图', hideInMenu: true },
           },
+          {
+            path: 'relations',
+            name: 'BannerNewsRelation',
+            component: () => import('@/views/banner/BannerNewsRelation.vue'),
+            meta: { title: '关联关系管理' },
+          },
         ],
       },
     ],

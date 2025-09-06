@@ -12,9 +12,10 @@
   <view class="content" wx:else>
     <!-- 轮播图 -->
     <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="500" circular="true">
-      <block wx:for="{{banners}}" wx:key="id">
+      <block wx:for="{{banners}}" wx:key="id" wx:for-index="idx">
         <swiper-item>
-          <image src="{{item.imageUrl}}" class="banner-image" mode="aspectFill" bindtap="onBannerTap" data-url="{{item.linkUrl}}"></image>
+          <image src="{{item.imageUrl}}" class="banner-image" mode="aspectFill" bindtap="onBannerTap" data-url="{{item.linkUrl}}" data-index="{{idx}}"></image>
+          <view class="banner-title" wx:if="{{item.title}}">{{item.title}}</view>
         </swiper-item>
       </block>
     </swiper>

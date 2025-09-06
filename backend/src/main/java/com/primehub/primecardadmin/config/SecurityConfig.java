@@ -64,7 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 // C端新闻资讯接口，允许无需登录访问
-                .antMatchers("/api/client/news/**").permitAll()
+                .antMatchers("/client/news/**").permitAll()
+                // C端轮播图接口，允许无需登录访问
+                .antMatchers("/client/banners/**").permitAll()
+                // 调试接口，允许无需登录访问（仅开发环境）
+                .antMatchers("/debug/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

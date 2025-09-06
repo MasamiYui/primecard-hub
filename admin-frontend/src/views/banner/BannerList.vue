@@ -4,10 +4,16 @@
     <div class="page-header">
       <div class="header-content">
         <h1 class="page-title">轮播图管理</h1>
-        <el-button type="primary" @click="handleCreate">
-          <el-icon><Plus /></el-icon>
-          新增轮播图
-        </el-button>
+        <div class="header-actions">
+          <el-button type="success" @click="goToRelationManage">
+            <el-icon><Link /></el-icon>
+            关联关系管理
+          </el-button>
+          <el-button type="primary" @click="handleCreate">
+            <el-icon><Plus /></el-icon>
+            新增轮播图
+          </el-button>
+        </div>
       </div>
     </div>
 
@@ -94,17 +100,39 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="链接目标" min-width="150">
+        <el-table-column label="链接目标" min-width="200">
           <template #default="{ row }">
-            <span v-if="row.linkType === BannerLinkType.NONE">无</span>
-            <span v-else-if="row.linkType === BannerLinkType.EXTERNAL">
-              <el-link :href="row.linkUrl" target="_blank" type="primary">{{ row.linkUrl }}</el-link>
-            </span>
-            <span v-else-if="row.linkType === BannerLinkType.CARD">信用卡ID: {{ row.linkId }}</span>
-            <span v-else-if="row.linkType === BannerLinkType.NEWS">资讯ID: {{ row.linkId }}</span>
-            <span v-else-if="row.linkType === BannerLinkType.MINIPROGRAM">
-              小程序: {{ row.linkAppid }} - {{ row.linkPage }}
-            </span>
+            <div class="link-target-cell">
+              <div class="link-type-tag">
+                <el-tag :type="getLinkTypeTag(row.linkType)" size="small">
+                  {{ getLinkTypeLabel(row.linkType) }}
+                </el-tag>
+              </div>
+              <div class="link-info" v-if="row.linkType !== BannerLinkType.NONE">
+                <span v-if="row.linkType === BannerLinkType.EXTERNAL">
+                  <el-icon><Link /></el-icon>
+                  <el-link :href="row.linkUrl" target="_blank" type="primary" style="margin-left: 4px;">
+                    {{ row.linkUrl && row.linkUrl.length > 25 ? row.linkUrl.substring(0, 25) + '...' : row.linkUrl }}
+                  </el-link>
+                </span>
+                <span v-else-if="row.linkType === BannerLinkType.CARD">
+                  <el-icon><CreditCard /></el-icon>
+                  <span style="margin-left: 4px;">ID: {{ row.linkId }}</span>
+                </span>
+                <span v-else-if="row.linkType === BannerLinkType.NEWS">
+                  <el-icon><Document /></el-icon>
+                  <span style="margin-left: 4px;">ID: {{ row.linkId }}</span>
+                </span>
+                <span v-else-if="row.linkType === BannerLinkType.MINIPROGRAM">
+                  <el-icon><Cellphone /></el-icon>
+                  <div style="margin-left: 4px; font-size: 12px;">
+                    <div>AppID: {{ row.linkAppid }}</div>
+                    <div>Path: {{ row.linkPage }}</div>
+                  </div>
+                </span>
+              </div>
+              <span v-else class="no-link">无链接</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="展示时间" width="240">
@@ -159,7 +187,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, ArrowUp, ArrowDown } from '@element-plus/icons-vue'
+import { Plus, ArrowUp, ArrowDown, Document, CreditCard, Link, Cellphone } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { bannerApi } from '@/api/banner'
 import { formatDateTime } from '@/utils/format.ts'
@@ -256,6 +284,11 @@ const handleSortChange = (column: { prop: string; order: string }) => {
 // 创建轮播图
 const handleCreate = () => {
   router.push('/banners/create')
+}
+
+// 跳转到关联关系管理
+const goToRelationManage = () => {
+  router.push('/banners/relations')
 }
 
 // 编辑轮播图
@@ -374,6 +407,11 @@ onMounted(() => {
   align-items: center;
 }
 
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
 .search-bar {
   margin-bottom: 20px;
   padding: 15px;
@@ -429,5 +467,27 @@ onMounted(() => {
 
 .sort-buttons .el-icon {
   font-size: 12px;
+}
+
+.link-target-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.link-type-tag {
+  align-self: flex-start;
+}
+
+.link-info {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #606266;
+}
+
+.no-link {
+  color: #909399;
+  font-style: italic;
 }
 </style>

@@ -1,0 +1,19 @@
+<!-- pages/webview/webview.wxml -->
+<view class="container">
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="loading-spinner"></view>
+    <view class="loading-text">加载中...</view>
+  </view>
+  
+  <!-- 错误状态 -->
+  <view wx:elif="{{error}}" class="error-state">
+    <image class="error-icon" src="/images/error.png" mode="aspectFit"></image>
+    <view class="error-text">加载失败</view>
+    <view class="error-subtext">无法打开链接，请稍后再试</view>
+    <button class="back-button" bindtap="goBack">返回</button>
+  </view>
+  
+  <!-- 网页内容 -->
+  <web-view wx:else src="{{url}}" bindload="onWebviewLoad" binderror="onWebviewError"></web-view>
+</view>

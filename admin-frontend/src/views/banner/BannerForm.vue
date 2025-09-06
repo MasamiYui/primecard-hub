@@ -43,14 +43,57 @@
 
         <!-- 根据链接类型显示不同的表单项 -->
         <template v-if="bannerForm.linkType === BannerLinkType.CARD">
-          <el-form-item label="信用卡ID" prop="linkId">
-            <el-input-number v-model="bannerForm.linkId" :min="1" placeholder="请输入信用卡ID" />
+          <el-form-item label="关联信用卡" prop="linkId">
+            <el-select
+              v-model="bannerForm.linkId"
+              placeholder="请选择关联的信用卡"
+              filterable
+              clearable
+              style="width: 100%"
+              @focus="loadCreditCards"
+            >
+              <el-option
+                v-for="card in creditCards"
+                :key="card.id"
+                :label="`${card.name} (${card.bankName})`"
+                :value="card.id"
+              >
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span>{{ card.name }}</span>
+                  <el-tag size="small" type="info">{{ card.bankName }}</el-tag>
+                </div>
+              </el-option>
+            </el-select>
+            <div class="form-help-text">选择轮播图要关联的信用卡</div>
           </el-form-item>
         </template>
 
         <template v-if="bannerForm.linkType === BannerLinkType.NEWS">
-          <el-form-item label="资讯ID" prop="linkId">
-            <el-input-number v-model="bannerForm.linkId" :min="1" placeholder="请输入资讯ID" />
+          <el-form-item label="关联新闻" prop="linkId">
+            <el-select
+              v-model="bannerForm.linkId"
+              placeholder="请选择关联的新闻"
+              filterable
+              clearable
+              style="width: 100%"
+              @focus="loadNews"
+            >
+              <el-option
+                v-for="news in newsList"
+                :key="news.id"
+                :label="news.title"
+                :value="news.id"
+              >
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ news.title }}</span>
+                  <div>
+                    <el-tag size="small" :type="getNewsStatusType(news.status)">{{ getNewsStatusText(news.status) }}</el-tag>
+                    <el-tag size="small" type="info" style="margin-left: 4px;">{{ news.categoryName || '无分类' }}</el-tag>
+                  </div>
+                </div>
+              </el-option>
+            </el-select>
+            <div class="form-help-text">选择轮播图要关联的新闻资讯</div>
           </el-form-item>
         </template>
 
@@ -125,13 +168,21 @@ import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { bannerApi } from '@/api/banner'
+import { newsApi } from '@/api/news'
+import { creditCardApi } from '@/api/creditCard'
 import { BannerStatus, BannerLinkType } from '@/types/api'
-import type { BannerCreate } from '@/types/api'
+import type { BannerCreate, News, CreditCard } from '@/types/api'
 
 const route = useRoute()
 const router = useRouter()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
+
+// 选择器数据
+const newsList = ref<News[]>([])
+const creditCards = ref<CreditCard[]>([])
+const newsLoading = ref(false)
+const cardLoading = ref(false)
 
 // 判断是否为编辑模式
 const isEdit = computed(() => route.params.id !== undefined)
@@ -304,6 +355,69 @@ const goBack = () => {
   router.push('/banners')
 }
 
+// 加载新闻数据
+const loadNews = async () => {
+  if (newsList.value.length > 0) return // 避免重复加载
+  
+  newsLoading.value = true
+  try {
+    const res = await newsApi.getList({
+      page: 0,
+      size: 100, // 加载前100条
+      status: 'PUBLISHED' // 只加载已发布的新闻
+    })
+    if (res.data && res.data.content) {
+      newsList.value = res.data.content
+    }
+  } catch (error) {
+    console.error('加载新闻列表失败', error)
+    ElMessage.error('加载新闻列表失败')
+  } finally {
+    newsLoading.value = false
+  }
+}
+
+// 加载信用卡数据
+const loadCreditCards = async () => {
+  if (creditCards.value.length > 0) return // 避免重复加载
+  
+  cardLoading.value = true
+  try {
+    const res = await creditCardApi.getList({
+      page: 0,
+      size: 100 // 加载前100条
+    })
+    if (res.data && res.data.content) {
+      creditCards.value = res.data.content
+    }
+  } catch (error) {
+    console.error('加载信用卡列表失败', error)
+    ElMessage.error('加载信用卡列表失败')
+  } finally {
+    cardLoading.value = false
+  }
+}
+
+// 获取新闻状态类型
+const getNewsStatusType = (status: string) => {
+  switch (status) {
+    case 'PUBLISHED': return 'success'
+    case 'DRAFT': return 'warning'
+    case 'ARCHIVED': return 'info'
+    default: return 'info'
+  }
+}
+
+// 获取新闻状态文本
+const getNewsStatusText = (status: string) => {
+  switch (status) {
+    case 'PUBLISHED': return '已发布'
+    case 'DRAFT': return '草稿'
+    case 'ARCHIVED': return '已归档'
+    default: return '未知'
+  }
+}
+
 onMounted(() => {
   // 如果是编辑模式，获取轮播图详情
   if (isEdit.value && route.params.id) {
@@ -366,5 +480,22 @@ onMounted(() => {
   font-size: 12px;
   color: #606266;
   margin-top: 5px;
+}
+
+.form-help-text {
+  color: #909399;
+  font-size: 12px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+:deep(.el-select-dropdown__item) {
+  height: auto;
+  padding: 8px 20px;
+}
+
+:deep(.el-form-item__content) {
+  flex-direction: column;
+  align-items: flex-start;
 }
 </style>

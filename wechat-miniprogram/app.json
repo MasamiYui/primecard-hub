@@ -5,7 +5,8 @@
     "pages/news-detail/news-detail",
     "pages/cards/cards",
     "pages/card-detail/card-detail",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/webview/webview"
   ],
   "window": {
     "backgroundTextStyle": "light",

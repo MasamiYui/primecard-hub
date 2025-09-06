@@ -121,5 +121,103 @@ UPDATE tags SET usage_count = (SELECT COUNT(*) FROM news_tags WHERE tag_id = 8) 
 UPDATE tags SET usage_count = (SELECT COUNT(*) FROM news_tags WHERE tag_id = 9) WHERE id = 9;
 UPDATE tags SET usage_count = (SELECT COUNT(*) FROM news_tags WHERE tag_id = 10) WHERE id = 10;
 
+-- 插入轮播图测试数据
+INSERT INTO banners (
+    title, 
+    image_url, 
+    link_type, 
+    link_url, 
+    link_id, 
+    sort_order, 
+    status, 
+    start_time, 
+    end_time, 
+    view_count, 
+    click_count, 
+    created_by, 
+    created_at, 
+    updated_at
+) VALUES 
+(
+    '招商银行信用卡优惠活动', 
+    'https://via.placeholder.com/750x300/FF6B35/FFFFFF?text=招商银行优惠活动',
+    'NEWS', 
+    NULL, 
+    1, 
+    1, 
+    'ACTIVE', 
+    '2023-01-01 00:00:00', 
+    '2024-12-31 23:59:59', 
+    128, 
+    45, 
+    1, 
+    CURRENT_TIMESTAMP(), 
+    CURRENT_TIMESTAMP()
+),
+(
+    '中信银行钻石卡申请', 
+    'https://via.placeholder.com/750x300/4A90E2/FFFFFF?text=中信银行钻石卡',
+    'EXTERNAL', 
+    'https://creditcard.ecitic.com/h5/shenqing/index.html', 
+    NULL, 
+    2, 
+    'ACTIVE', 
+    '2023-01-01 00:00:00', 
+    '2024-12-31 23:59:59', 
+    89, 
+    32, 
+    1, 
+    CURRENT_TIMESTAMP(), 
+    CURRENT_TIMESTAMP()
+),
+(
+    '信用卡积分兑换攻略', 
+    'https://via.placeholder.com/750x300/50C878/FFFFFF?text=积分兑换攻略',
+    'NEWS', 
+    NULL, 
+    2, 
+    3, 
+    'ACTIVE', 
+    '2023-01-01 00:00:00', 
+    '2024-12-31 23:59:59', 
+    156, 
+    67, 
+    1, 
+    CURRENT_TIMESTAMP(), 
+    CURRENT_TIMESTAMP()
+),
+(
+    '浦发银行AE白金卡权益', 
+    'https://via.placeholder.com/750x300/9B59B6/FFFFFF?text=浦发AE白金卡',
+    'EXTERNAL', 
+    'https://ecentre.spdbccc.com.cn/creditcard/indexActivity.htm', 
+    NULL, 
+    4, 
+    'ACTIVE', 
+    '2023-01-01 00:00:00', 
+    '2024-12-31 23:59:59', 
+    76, 
+    23, 
+    1, 
+    CURRENT_TIMESTAMP(), 
+    CURRENT_TIMESTAMP()
+),
+(
+    '信用卡安全使用指南', 
+    'https://via.placeholder.com/750x300/E74C3C/FFFFFF?text=信用卡安全指南',
+    'NEWS', 
+    NULL, 
+    3, 
+    5, 
+    'ACTIVE', 
+    '2023-01-01 00:00:00', 
+    '2024-12-31 23:59:59', 
+    203, 
+    89, 
+    1, 
+    CURRENT_TIMESTAMP(), 
+    CURRENT_TIMESTAMP()
+);
+
 -- 注意：以上密码均为加密后的值，原始密码为 'password'
 -- 实际使用时，应该使用适当的密码加密方法生成密码哈希

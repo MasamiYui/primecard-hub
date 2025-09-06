@@ -109,7 +109,7 @@ Page({
       params.categoryId = this.data.currentCategory;
     }
     
-    return request.get('/api/client/news', params)
+    return request.get('/client/news', params)
       .then(res => {
         if (res.success && res.data) {
           const moreNews = res.data.content || [];

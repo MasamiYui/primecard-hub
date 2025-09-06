@@ -42,7 +42,7 @@ Page({
     this.setData({ loading: true, error: false });
     
     // 从API获取新闻详情
-    const apiUrl = `/api/client/news/${this.data.newsId}`;
+    const apiUrl = `/client/news/${this.data.newsId}`;
     
     request.get(apiUrl)
       .then(res => {

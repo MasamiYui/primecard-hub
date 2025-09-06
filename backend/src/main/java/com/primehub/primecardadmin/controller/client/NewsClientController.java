@@ -17,7 +17,7 @@ import java.util.List;
  * C端新闻资讯控制器
  */
 @RestController
-@RequestMapping("/api/client/news")
+@RequestMapping("/client/news")
 @Tag(name = "C端新闻资讯接口", description = "提供C端新闻资讯相关的API")
 public class NewsClientController {
 
