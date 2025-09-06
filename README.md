@@ -162,3 +162,27 @@ PrimeCard Hub 是一个为信用卡用户打造的开源信用卡资讯与管理
 
 
 PrimeCard Hub，让您的信用卡使用更便捷、更具价值。
+
+## 许可证
+
+本项目采用 [GNU General Public License v3.0](LICENSE) 开源许可证。
+
+- 您可以自由地使用、修改和分发本软件
+- 如果您分发修改后的版本，必须以相同的许可证开源
+- 详细条款请查看 [LICENSE](LICENSE) 文件
+
+## 贡献
+
+欢迎所有开发者为 PrimeCardHub 项目做出贡献！无论是报告问题、提出建议，还是提交代码，我们都非常欢迎。
+
+### 如何贡献
+
+1. Fork 本仓库
+2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
+
+## 免责声明
+
+本软件按"原样"提供，不提供任何明示或暗示的保证。使用本软件进行的任何信用卡管理活动，风险由用户自行承担。
